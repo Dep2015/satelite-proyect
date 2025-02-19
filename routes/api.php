@@ -112,10 +112,10 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/add/estadodeatencion', [EstadoAtencionController::class, 'addEstadoAtencion']);
 
   //apis estado atencion edit
-  Route::post('/add/estadodeatencion', [EstadoAtencionController::class, 'editEstadoAtencion']);
+  Route::post('/edit/estadodeatencion', [EstadoAtencionController::class, 'editEstadoAtencion']);
 
   //apis estado atencion edit 2
-  Route::post('/add/estadodeatencion/{id_tipo}', [EstadoAtencionController::class, 'editEstadoAtencion2']);
+  Route::post('/edit/estadodeatencion/{id_tipo}', [EstadoAtencionController::class, 'editEstadoAtencion2']);
 
   //apis estado atencion  All
   Route::get('/all/estadodeatencion', [EstadoAtencionController::class, 'allEstadoAtencion']);

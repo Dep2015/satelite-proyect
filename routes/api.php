@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccionEstadoAtencionController;
 use App\Http\Controllers\CampoObligatorioObraImpuestosController;
 use App\Http\Controllers\EstadoAtencionController;
+use App\Http\Controllers\ObraImpuestoController;
 use App\Http\Controllers\TipodeAtencionController;
 use App\Http\Controllers\TipoEstadoAtencionController;
 use Illuminate\Http\Request;
@@ -127,5 +128,13 @@ Route::middleware('auth:sanctum')->group(function () {
   //apis accion estado atencion  delete 2
 
   Route::post('/delete/estadodeatencion', [EstadoAtencionController::class, 'deleteEstadoAtencion2']);
+
+
+  // Obra Impuesto
+
+  Route::post('/add/obraporimpuesto', [ObraImpuestoController::class, 'addObraImpuesto']);
+
+  Route::get('/all/obraporimpuesto', [ObraImpuestoController::class, 'allObraImpuesto']);
+
 
 });

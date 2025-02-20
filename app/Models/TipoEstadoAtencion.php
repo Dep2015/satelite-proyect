@@ -10,4 +10,8 @@ class TipoEstadoAtencion extends Model
         'name',
         'id_empresa',
     ];
+
+    public function obraimpuesto() {
+        return $this->hasMany(ObraImpuestos::class,'tipo_id');
+    }
 }

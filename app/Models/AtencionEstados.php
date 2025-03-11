@@ -30,4 +30,8 @@ class AtencionEstados extends Model
     public function acciontipoatencion() {
         return $this->belongsTo(TipodeAtencion::class,'tipo_id');
     }
+
+    public function obraporimpuesto() {
+        return $this->hasMany(ObraporImpuesto::class,'estado_id');
+    }
 }

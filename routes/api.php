@@ -8,6 +8,7 @@ use App\Http\Controllers\TipodeAtencionController;
 use App\Http\Controllers\TipoEstadoAtencionController;
 use App\Http\Controllers\AtencionEstadoController;
 use App\Http\Controllers\PestaVistaController;
+use App\Http\Controllers\ObraporImpuestoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -131,9 +132,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
   // Obra Impuesto
 
-  Route::post('/add/obraporimpuesto', [ObraImpuestoController::class, 'addObraImpuesto']);
+  Route::post('/add/obraporimpuesto', [ObraporImpuestoController::class, 'addObraporImpuesto']);
 
-  Route::get('/all/obraporimpuesto', [ObraImpuestoController::class, 'allObraImpuesto']);
+  Route::get('/all/obraporimpuesto', [ObraporImpuestoController::class, 'allObraporImpuesto']);
 
 
   // Vista Previa - ajustes

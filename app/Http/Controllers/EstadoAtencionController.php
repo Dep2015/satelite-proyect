@@ -3,12 +3,77 @@
 namespace App\Http\Controllers;
 
 use App\Models\EstadoAtencion;
+use App\Models\ActividadesEstadoAtencion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class EstadoAtencionController extends Controller
 {
-    public function addEstadoAtencion(Request $request){
+
+    public function addEstadoAtencion(Request $request)
+    {
+        $validated = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'color'  => 'required|string|max:255',
+            'irechazo'  => 'required|string|max:255',
+            'iavance'  => 'required|string|max:255',
+            'accion_id' => 'required|exists:accion_estado_atencions,id',
+            'tipo_id' => 'required|exists:tipode_atencions,id',
+            'descripcion' => 'nullable|string',
+            'id_empresa' => 'required|integer',
+            'procesos' => 'nullable|array',
+            'procesos.*.secuencia' => 'required|integer',
+            'procesos.*.nombre' => 'required|string|max:255',
+        ]);
+
+        if ($validated->fails()) {
+            return response()->json($validated->errors(), 403);
+        }
+
+        DB::beginTransaction(); // Inicia la transacción
+
+        try {
+            // Guardar Estado de Atención
+            $EstadoAtencion = new EstadoAtencion();
+            $EstadoAtencion->name = $request->name;
+            $EstadoAtencion->color = $request->color;
+            $EstadoAtencion->irechazo = $request->irechazo;
+            $EstadoAtencion->iavance = $request->iavance;
+            $EstadoAtencion->accion_id = $request->accion_id;
+            $EstadoAtencion->tipo_id = $request->tipo_id;
+            $EstadoAtencion->descripcion = $request->descripcion;
+            $EstadoAtencion->id_empresa = $request->id_empresa;
+            $EstadoAtencion->save();
+
+            // Guardar Procesos si existen
+            if ($request->has('procesos')) {
+                foreach ($request->procesos as $proceso) {
+                    ActividadesEstadoAtencion::create([
+                        'estado_atencion_id' => $EstadoAtencion->id,
+                        'secuencia' => $proceso['secuencia'],
+                        'nombre' => $proceso['nombre'],
+                        'descripcion' => $proceso['descripcion'] ?? null,
+                    ]);
+                }
+            }
+
+            DB::commit(); // Confirma la transacción
+
+            return response()->json([
+                'message' => 'Estado y procesos agregados exitosamente',
+                'estado_id' => $EstadoAtencion->id
+            ], 200);
+
+        } catch (\Exception $exception) {
+            DB::rollback(); // Revierte la transacción en caso de error
+            return response()->json([
+                'error' => $exception->getMessage(),
+            ], 403);
+        }
+    }
+
+    public function addEstadoAtencionv2(Request $request){
         $validated = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'color'  => 'required|string|max:255',
@@ -19,7 +84,7 @@ class EstadoAtencionController extends Controller
             'descripcion' => 'string',
             'id_empresa' => 'required|integer',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
@@ -46,7 +111,7 @@ class EstadoAtencionController extends Controller
            }catch(\Exception $exception){
 
             return response()->json([
-                'error'=> $exception->getMessage(),  
+                'error'=> $exception->getMessage(),
                 ],403);
 
            }
@@ -65,7 +130,7 @@ class EstadoAtencionController extends Controller
             'descripcion' => 'string',
             'id' => 'required|integer',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
@@ -88,7 +153,7 @@ class EstadoAtencionController extends Controller
            }catch(\Exception $exception){
 
             return response()->json([
-                'error'=> $exception->getMessage(),  
+                'error'=> $exception->getMessage(),
                 ],403);
 
            }
@@ -107,7 +172,7 @@ class EstadoAtencionController extends Controller
             'tipo_id' => 'required|exists:tipode_atencions,id',
             'descripcion' => 'string',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
@@ -125,7 +190,7 @@ class EstadoAtencionController extends Controller
                 'accion_id'=> $request->accion_id,
                 'tipo_id'=> $request->tipo_id,
                 'descripcion'=> $request->descripcion,
-                
+
             ]);
 
             return response()->json(
@@ -137,7 +202,7 @@ class EstadoAtencionController extends Controller
            }catch(\Exception $exception){
 
             return response()->json([
-                'error'=> $exception->getMessage(),  
+                'error'=> $exception->getMessage(),
                 ],403);
 
            }
@@ -146,11 +211,11 @@ class EstadoAtencionController extends Controller
 
 
     public function allEstadoAtencion(Request $request){
-    
+
         $validated = Validator::make($request->all(), [
              'id_empresa' => 'required|integer',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
@@ -167,10 +232,10 @@ class EstadoAtencionController extends Controller
 
            }catch(\Exception $exceptionall){
             return response()->json([
-                'error'=> $exceptionall->getMessage(),  
+                'error'=> $exceptionall->getMessage(),
                 ],403);
            }
-    
+
     }
 
 
@@ -187,7 +252,7 @@ class EstadoAtencionController extends Controller
 
         } catch(\Exception $exceptiondelete){
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),  
+                'error'=> $exceptiondelete->getMessage(),
                 ],403);
         }
     }
@@ -198,7 +263,7 @@ class EstadoAtencionController extends Controller
         $validated = Validator::make($request->all(), [
             'id_empresa' => 'required|integer',
            ]);
-          
+
           if($validated->fails()){
               return response()->json($validated->errors(),403);
           }
@@ -214,7 +279,7 @@ class EstadoAtencionController extends Controller
 
         } catch(\Exception $exceptiondelete){
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),  
+                'error'=> $exceptiondelete->getMessage(),
                 ],403);
         }
     }

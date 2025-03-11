@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('estado_atencions', function (Blueprint $table) {
+        Schema::create('atencion_estados', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('color');
@@ -21,8 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_empresa');
             $table->json('actividades')->nullable();
 
-            //llaves foraneas
-
+            // Llaves foráneas
             $table->foreignId('accion_id')->constrained('accion_estado_atencions')->onDelete('cascade');
             $table->foreignId('tipo_id')->constrained('tipode_atencions')->onDelete('cascade');
 
@@ -35,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('estado_atencions');
+        Schema::dropIfExists('atencion_estados');
     }
 };

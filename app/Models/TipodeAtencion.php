@@ -12,6 +12,6 @@ class TipodeAtencion extends Model
     ];
 
     public function estadoatencion() {
-        return $this->hasMany(EstadoAtencion::class,'tipo_id');
+        return $this->hasMany(AtencionEstados::class,'tipo_id');
     }
 }

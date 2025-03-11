@@ -11,7 +11,8 @@ class AccionEstadoAtencion extends Model
         'id_empresa',
     ];
 
-    public function estadoatencion() {
-        return $this->hasMany(EstadoAtencion::class,'accion_id');
+
+    public function estadoatencionv1() {
+        return $this->hasMany(AtencionEstados::class,'accion_id');
     }
 }

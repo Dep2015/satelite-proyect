@@ -4,21 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EstadoAtencion extends Model
+class AtencionEstados extends Model
 {
-    use HasFactory;
-
-    protected $table = 'estado_atencions';
-
     protected $fillable = [
         'name',
         'color',
-       'irechazo',
+        'irechazo',
         'iavance',
-        'accion_id',
-        'tipo_id',
         'descripcion',
         'id_empresa',
+        'accion_id',
+        'tipo_id',
+        'actividades',
+    ];
+
+    protected $casts = [
+        'actividades' => 'array',
     ];
 
     public function accionestado() {
@@ -28,10 +29,5 @@ class EstadoAtencion extends Model
 
     public function acciontipoatencion() {
         return $this->belongsTo(TipodeAtencion::class,'tipo_id');
-    }
-
-    public function actividades()
-    {
-        return $this->hasMany(EstadoAtencionActividad::class, 'estado_atencion_id');
     }
 }

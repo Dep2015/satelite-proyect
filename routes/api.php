@@ -6,6 +6,7 @@ use App\Http\Controllers\EstadoAtencionController;
 use App\Http\Controllers\ObraImpuestoController;
 use App\Http\Controllers\TipodeAtencionController;
 use App\Http\Controllers\TipoEstadoAtencionController;
+use App\Http\Controllers\AtencionEstadoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -20,7 +21,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
   Route::post('/logout', [AuthController::class, 'logout']);
 
-  // APIS DE CONFIGURACIÓN 
+  // APIS DE CONFIGURACIÓN
 
   //apis tipo create
   Route::post('/add/tipoestadoatencion', [TipoEstadoAtencionController::class, 'addTipoEstadoAtencion']);
@@ -110,7 +111,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
   //apis estado atencion create
-  Route::post('/add/estadodeatencion', [EstadoAtencionController::class, 'addEstadoAtencion']);
+  Route::post('/add/atencionestados', [AtencionEstadoController::class, 'addAtencionEstados']);
 
   //apis estado atencion edit
   Route::post('/edit/estadodeatencion', [EstadoAtencionController::class, 'editEstadoAtencion']);
@@ -119,7 +120,7 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/edit/estadodeatencion/{id_tipo}', [EstadoAtencionController::class, 'editEstadoAtencion2']);
 
   //apis estado atencion  All
-  Route::get('/all/estadodeatencion', [EstadoAtencionController::class, 'allEstadoAtencion']);
+  Route::get('/all/estadodeatencion', [AtencionEstadoController::class, 'allAtencionEstados']);
 
   //apis accion estado atencion  delete
 

@@ -114,7 +114,7 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/add/atencionestados', [AtencionEstadoController::class, 'addAtencionEstados']);
 
   //apis estado atencion edit
-  Route::post('/edit/estadodeatencion', [EstadoAtencionController::class, 'editEstadoAtencion']);
+  Route::post('/edit/estadodeatencions', [EstadoAtencionController::class, 'editEstadoAtencion']);
 
   //apis estado atencion edit 2
   Route::post('/edit/estadodeatencion/{id_tipo}', [EstadoAtencionController::class, 'editEstadoAtencion2']);

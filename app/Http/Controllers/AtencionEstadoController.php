@@ -59,6 +59,62 @@ class AtencionEstadoController extends Controller
     }
 
 
+    public function editAtencionEstados(Request $request){
+
+        $validated = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'color'  => 'required|string|max:255',
+            'irechazo'  => 'required|string|max:255',
+            'iavance'  => 'required|string|max:255',
+            'accion_id' => 'required|exists:accion_estado_atencions,id',
+            'tipo_id' => 'required|exists:tipode_atencions,id',
+            'descripcion' => 'nullable|string',
+            'id_empresa' => 'required|integer',
+            'actividades' => 'nullable|array',
+            'actividades.*.secuencia' => 'required|integer',
+            'actividades.*.nombre' => 'required|string|max:255',
+            ]);
+
+           if($validated->fails()){
+               return response()->json($validated->errors(),403);
+           }
+
+           try{
+
+            $EstadoAtencion_data = AtencionEstados::find($request->id);
+
+
+           $updateEstadoAtencion = $EstadoAtencion_data->update([
+                 'name'=> $request->name,
+                 'color' => $request->color,
+                 'irechazo' => $request->irechazo,
+                 'iavance' => $request->iavance,
+                 'descripcion' => $request->descripcion,
+                 'id_empresa' => $request->id_empresa,
+                 'accion_id' => $request->accion_id,
+                 'tipo_id' => $request->tipo_id,
+                 'actividades'  => $request->actividades,
+            ]);
+
+            return response()->json(
+                [
+                    'message'=> 'Estado updated Succeccfully',
+                    'updated_tipoestadoatencion' => $updateEstadoAtencion,
+                ],200 );
+
+           }catch(\Exception $exception){
+
+            return response()->json([
+                'error'=> $exception->getMessage(),
+                ],403);
+
+           }
+
+    }
+
+
+
+
     public function allAtencionEstados(Request $request){
 
         $validated = Validator::make($request->all(), [
@@ -85,5 +141,51 @@ class AtencionEstadoController extends Controller
                 ],403);
            }
 
+    }
+
+
+    public function deleteAtencionEstados(Request $request, $id_tipo){
+
+        try{
+            $EstadoAtencion = AtencionEstados::find($id_tipo);
+            $EstadoAtencion->delete();
+            return response()->json(
+                [
+                    'message'=> 'Estado delete Succeccfully'
+                ],200 );
+
+
+        } catch(\Exception $exceptiondelete){
+            return response()->json([
+                'error'=> $exceptiondelete->getMessage(),
+                ],403);
+        }
+    }
+
+
+    public function deleteAtencionEstados2(Request $request){
+
+        $validated = Validator::make($request->all(), [
+            'id_empresa' => 'required|integer',
+           ]);
+
+          if($validated->fails()){
+              return response()->json($validated->errors(),403);
+          }
+
+        try{
+            $EstadoAtencion = AtencionEstados::find($request->id);
+            $EstadoAtencion->delete();
+            return response()->json(
+                [
+                    'message'=> 'Estado delete Succeccfully'
+                ],200 );
+
+
+        } catch(\Exception $exceptiondelete){
+            return response()->json([
+                'error'=> $exceptiondelete->getMessage(),
+                ],403);
+        }
     }
 }

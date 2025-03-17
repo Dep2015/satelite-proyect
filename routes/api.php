@@ -9,6 +9,13 @@ use App\Http\Controllers\TipoEstadoAtencionController;
 use App\Http\Controllers\AtencionEstadoController;
 use App\Http\Controllers\PestaVistaController;
 use App\Http\Controllers\ObraporImpuestoController;
+use App\Http\Controllers\TipoGastoController;
+use App\Http\Controllers\TipoFinancistaController;
+use App\Http\Controllers\TipoContratistaController;
+use App\Http\Controllers\EstadoRembolsoController;
+use App\Http\Controllers\PagosOIController;
+use App\Http\Controllers\InformacionContratistaController;
+use App\Http\Controllers\InformacionFinancistaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -136,12 +143,120 @@ Route::middleware('auth:sanctum')->group(function () {
 
   Route::get('/all/obraporimpuesto', [ObraporImpuestoController::class, 'allObraporImpuesto']);
 
+  Route::post('/edit/obraporimpuesto', [ObraporImpuestoController::class, 'editObraporImpuesto']);
+
+  Route::post('/delete/obraporimpuesto', [ObraporImpuestoController::class, 'deleteObraporImpuesto']);
+
 
   // Vista Previa - ajustes
 
   Route::get('/all/pestavista', [PestaVistaController::class, 'allPestaVista']);
   Route::post('/add/pestavista', [PestaVistaController::class, 'addPestaVista']);
   Route::post('/edit/pestavista', [PestaVistaController::class, 'editPestaVista']);
+
+
+  // Tipo de gasto
+
+
+  Route::post('/add/tipogasto', [TipoGastoController::class, 'addTipoGasto']);
+
+  Route::post('/edit/tipogasto', [TipoGastoController::class, 'editTipoGasto']);
+
+  Route::post('/edit/tipogasto/{id_campo}', [TipoGastoController::class, 'editTipoGasto2']);
+
+  Route::get('/all/tipogasto', [TipoGastoController::class, 'allTipoGasto']);
+
+  Route::post('/delete/tipogasto/{id_campo}', [TipoGastoController::class, 'deleteTipoGasto']);
+
+  Route::post('/delete/tipogasto', [TipoGastoController::class, 'deleteTipoGasto2']);
+
+
+  // Tipo de financista
+
+
+  Route::post('/add/tipofinancista', [TipoFinancistaController::class, 'addTipoFinancista']);
+
+  Route::post('/edit/tipofinancista', [TipoFinancistaController::class, 'editTipoFinancista']);
+
+  Route::post('/edit/tipofinancista/{id_campo}', [TipoFinancistaController::class, 'editTipoFinancista2']);
+
+  Route::get('/all/tipofinancista', [TipoFinancistaController::class, 'allTipoFinancista']);
+
+  Route::post('/delete/tipofinancista/{id_campo}', [TipoFinancistaController::class, 'deleteTipoFinancista']);
+
+  Route::post('/delete/tipofinancista', [TipoFinancistaController::class, 'deleteTipoFinancista2']);
+
+
+
+    // Tipo de Contratista
+
+
+    Route::post('/add/tipocontratista', [TipoContratistaController::class, 'addTipoContratista']);
+
+    Route::post('/edit/tipocontratista', [TipoContratistaController::class, 'editTipoContratista']);
+
+    Route::post('/edit/tipocontratista/{id_campo}', [TipoContratistaController::class, 'editTipoContratista2']);
+
+    Route::get('/all/tipocontratista', [TipoContratistaController::class, 'allTipoContratista']);
+
+    Route::post('/delete/tipocontratista/{id_campo}', [TipoContratistaController::class, 'deleteTipoContratista']);
+
+    Route::post('/delete/tipocontratista', [TipoContratistaController::class, 'deleteTipoContratista2']);
+
+
+        // Estado Rembolso
+
+
+    Route::post('/add/estadorembolso', [EstadoRembolsoController::class, 'addEstadoRembolso']);
+
+    Route::post('/edit/estadorembolso', [EstadoRembolsoController::class, 'editEstadoRembolso']);
+
+    Route::post('/edit/estadorembolso/{id_campo}', [EstadoRembolsoController::class, 'editEstadoRembolso2']);
+
+    Route::get('/all/estadorembolso', [EstadoRembolsoController::class, 'allEstadoRembolso']);
+
+    Route::post('/delete/estadorembolso/{id_campo}', [EstadoRembolsoController::class, 'deleteEstadoRembolso']);
+
+    Route::post('/delete/estadorembolso', [EstadoRembolsoController::class, 'deleteEstadoRembolso2']);
+
+
+
+
+      // Pago OI
+
+  Route::post('/add/pagosoi', [PagosOIController::class, 'addPagosOI']);
+
+  Route::get('/all/pagosoi', [PagosOIController::class, 'allPagosOI']);
+
+  Route::post('/edit/pagosoi', [PagosOIController::class, 'editPagosOI']);
+
+  Route::post('/delete/pagosoi', [PagosOIController::class, 'deletePagosOI']);
+
+
+        // Informacion Financista
+
+  Route::post('/add/informacionfinancista', [InformacionFinancistaController::class, 'addInformacionFinancista']);
+
+  Route::get('/all/informacionfinancista', [InformacionFinancistaController::class, 'allInformacionFinancista']);
+
+  Route::post('/edit/informacionfinancista', [InformacionFinancistaController::class, 'editInformacionFinancista']);
+
+  Route::post('/delete/informacionfinancista', [InformacionFinancistaController::class, 'deleteInformacionFinancista']);
+
+
+
+
+          // Informacion Contratista
+
+  Route::post('/add/informacioncontratista', [InformacionContratistaController::class, 'addInInformacionContratista']);
+
+  Route::get('/all/informacioncontratista', [InformacionContratistaController::class, 'allInInformacionContratista']);
+
+  Route::post('/edit/informacioncontratista', [InformacionContratistaController::class, 'editInformacionContratista']);
+
+  Route::post('/delete/informacioncontratista', [InformacionContratistaController::class, 'deleteInformacionContratista']);
+
+
 
 
 });

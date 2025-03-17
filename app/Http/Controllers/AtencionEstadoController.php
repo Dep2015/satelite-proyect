@@ -166,7 +166,7 @@ class AtencionEstadoController extends Controller
     public function deleteAtencionEstados2(Request $request){
 
         $validated = Validator::make($request->all(), [
-            'id_empresa' => 'required|integer',
+            'id' => 'required|integer',
            ]);
 
           if($validated->fails()){

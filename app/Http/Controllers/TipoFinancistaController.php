@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TipoEstadoAtencion;
+use App\Models\TipoFinancista;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-
-class TipoEstadoAtencionController extends Controller
+class TipoFinancistaController extends Controller
 {
-    public function addTipoEstadoAtencion(Request $request){
+    public function addTipoFinancista(Request $request){
         $validated = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'id_empresa' => 'required|integer',
@@ -21,15 +20,15 @@ class TipoEstadoAtencionController extends Controller
 
            try{
 
-            $tipoEstadoAtencion = new TipoEstadoAtencion();
-            $tipoEstadoAtencion->name = $request->name;
-            $tipoEstadoAtencion->id_empresa = $request->id_empresa;
-            $tipoEstadoAtencion->save();
+            $tipoTipoFinancista = new TipoFinancista();
+            $tipoTipoFinancista->name = $request->name;
+            $tipoTipoFinancista->id_empresa = $request->id_empresa;
+            $tipoTipoFinancista->save();
 
             return response()->json(
                 [
                     'message'=> 'Tipo added Succeccfully',
-                    'tipo_id' => $tipoEstadoAtencion->id
+                    'tipo_id' => $tipoTipoFinancista->id
                 ],200 );
 
            }catch(\Exception $exception){
@@ -41,7 +40,7 @@ class TipoEstadoAtencionController extends Controller
            }
     }
 
-    public function editTipoEstadoAtencion(Request $request){
+    public function editTipoFinancista(Request $request){
 
         $validated = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -54,17 +53,17 @@ class TipoEstadoAtencionController extends Controller
 
            try{
 
-            $tipoEstadoAtencion_data = TipoEstadoAtencion::find($request->id);
+            $tipoTipoFinancista_data = TipoFinancista::find($request->id);
 
 
-           $updateTipoEstadoAtencion = $tipoEstadoAtencion_data->update([
+           $updateTipoFinancista = $tipoTipoFinancista_data->update([
                 'name'=> $request->name,
             ]);
 
             return response()->json(
                 [
                     'message'=> 'Tipo updated Succeccfully',
-                    'updated_tipoestadoatencion' => $updateTipoEstadoAtencion,
+                    'updated_tipoestadoatencion' => $updateTipoFinancista,
                 ],200 );
 
            }catch(\Exception $exception){
@@ -78,7 +77,7 @@ class TipoEstadoAtencionController extends Controller
     }
 
 
-    public function editTipoEstadoAtencion2(Request $request,$id_tipo){
+    public function editTipoFinancista2(Request $request,$id_tipo){
 
         $validated = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -90,17 +89,17 @@ class TipoEstadoAtencionController extends Controller
 
            try{
 
-            $tipoEstadoAtencion_data = TipoEstadoAtencion::find($id_tipo);
+            $tipoTipoFinancista_data = TipoFinancista::find($id_tipo);
 
 
-           $updateTipoEstadoAtencion = $tipoEstadoAtencion_data->update([
+           $updateTipoFinancista = $tipoTipoFinancista_data->update([
                 'name'=> $request->name,
             ]);
 
             return response()->json(
                 [
                     'message'=> 'Tipo updated Succeccfully',
-                    'updated_tipoestadoatencion' => $updateTipoEstadoAtencion,
+                    'updated_tipoestadoatencion' => $updateTipoFinancista,
                 ],200 );
 
            }catch(\Exception $exception){
@@ -114,7 +113,7 @@ class TipoEstadoAtencionController extends Controller
     }
 
 
-    public function allTipoEstadoAtencion(Request $request){
+    public function allTipoFinancista(Request $request){
 
         $validated = Validator::make($request->all(), [
              'id_empresa' => 'required|integer',
@@ -126,12 +125,12 @@ class TipoEstadoAtencionController extends Controller
 
            try{
 
-            $itemsTipoEstadoAtencion = TipoEstadoAtencion::where('id_empresa', $request->id_empresa)->get();
+            $itemsTipoFinancista = TipoFinancista::where('id_empresa', $request->id_empresa)->get();
 
             return response()->json(
                 [
                     'success'=> true,
-                    'data' => $itemsTipoEstadoAtencion,
+                    'data' => $itemsTipoFinancista,
                 ],200 );
 
            }catch(\Exception $exceptionall){
@@ -142,11 +141,11 @@ class TipoEstadoAtencionController extends Controller
 
     }
 
-    public function deleteTipoEstadoAtencion(Request $request, $id_tipo){
+    public function deleteTipoFinancista(Request $request, $id_tipo){
 
         try{
-            $tipoEstadoAtencion = TipoEstadoAtencion::find($id_tipo);
-            $tipoEstadoAtencion->delete();
+            $tipoTipoFinancista = TipoFinancista::find($id_tipo);
+            $tipoTipoFinancista->delete();
             return response()->json(
                 [
                     'message'=> 'Tipo delete Succeccfully'
@@ -161,7 +160,7 @@ class TipoEstadoAtencionController extends Controller
     }
 
 
-    public function deleteTipoEstadoAtencion2(Request $request){
+    public function deleteTipoFinancista2(Request $request){
 
         $validated = Validator::make($request->all(), [
             'id' => 'required|integer',
@@ -172,8 +171,8 @@ class TipoEstadoAtencionController extends Controller
           }
 
         try{
-            $tipoEstadoAtencion = TipoEstadoAtencion::find($request->id);
-            $tipoEstadoAtencion->delete();
+            $tipoTipoFinancista = TipoFinancista::find($request->id);
+            $tipoTipoFinancista->delete();
             return response()->json(
                 [
                     'message'=> 'Tipo delete Succeccfully'
@@ -186,6 +185,5 @@ class TipoEstadoAtencionController extends Controller
                 ],403);
         }
     }
-
 
 }

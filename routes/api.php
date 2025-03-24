@@ -233,6 +233,15 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/delete/pagosoi', [PagosOIController::class, 'deletePagosOI']);
 
 
+  Route::post('/add/pagosois', [PagosOIController::class, 'addPagosOI']);
+
+  Route::get('/all/pagosois', [PagosOIController::class, 'allPagosOI']);
+
+  Route::post('/edit/pagosois', [PagosOIController::class, 'editPagosOI']);
+
+  Route::post('/delete/pagosois', [PagosOIController::class, 'deletePagosOI']);
+
+
         // Informacion Financista
 
   Route::post('/add/informacionfinancista', [InformacionFinancistaController::class, 'addInformacionFinancista']);

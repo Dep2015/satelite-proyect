@@ -248,9 +248,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
           // Informacion Contratista
 
-  Route::post('/add/informacioncontratista', [InformacionContratistaController::class, 'addInInformacionContratista']);
+  Route::post('/add/informacioncontratista', [InformacionContratistaController::class, 'addInformacionContratista']);
 
-  Route::get('/all/informacioncontratista', [InformacionContratistaController::class, 'allInInformacionContratista']);
+  Route::get('/all/informacioncontratista', [InformacionContratistaController::class, 'allInformacionContratista']);
 
   Route::post('/edit/informacioncontratista', [InformacionContratistaController::class, 'editInformacionContratista']);
 

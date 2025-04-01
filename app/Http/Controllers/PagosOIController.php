@@ -16,7 +16,7 @@ class PagosOIController extends Controller
             'id_estado_rembolso' => 'required|exists:estado_rembolsos,id',
             'monto_pagado' => 'required|numeric|min:0',
             'fecha' => 'required|date',
-            'concepto'=>'string|max:255',
+            'concepto'=>'required|string|max:255',
             'beneficiario' => 'required|nullable|array',
             'beneficiario.*.id' => 'required|integer',
             'beneficiario.*.nombre' => 'required|string|max:255',

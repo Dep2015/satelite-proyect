@@ -136,6 +136,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
   Route::post('/delete/estadodeatencion', [AtencionEstadoController::class, 'deleteEstadoAtencion2']);
 
+  Route::post('/delete/estadodeatencions', [AtencionEstadoController::class, 'deleteEstadoAtencion2']);
+
 
   // Obra Impuesto
 

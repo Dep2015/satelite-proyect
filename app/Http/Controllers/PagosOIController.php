@@ -16,6 +16,7 @@ class PagosOIController extends Controller
             'id_estado_rembolso' => 'required|exists:estado_rembolsos,id',
             'monto_pagado' => 'required|numeric|min:0',
             'fecha' => 'required|date',
+            'concepto'=>'string|max:255',
             'beneficiario' => 'required|nullable|array',
             'beneficiario.*.id' => 'required|integer',
             'beneficiario.*.nombre' => 'required|string|max:255',
@@ -39,6 +40,7 @@ class PagosOIController extends Controller
             $pagos->id_estado_rembolso = $request->id_estado_rembolso;
             $pagos->monto_pagado = $request->monto_pagado;
             $pagos->fecha = $request->fecha;
+            $pagos->concepto = $request->concepto;
             $pagos->beneficiario = $request->responsable;
             $pagos->grupo_interes = $request->unidades_gestion;
             $pagos->responsable = $request->centros_operacion;
@@ -64,6 +66,7 @@ class PagosOIController extends Controller
             'id_estado_rembolso' => 'required|exists:estado_rembolsos,id',
             'monto_pagado' => 'required|numeric|min:0',
             'fecha' => 'required|date',
+            'concepto'=>'string|max:255',
             'beneficiario' => 'required|nullable|array',
             'beneficiario.*.id' => 'required|integer',
             'beneficiario.*.nombre' => 'required|string|max:255',
@@ -89,6 +92,7 @@ class PagosOIController extends Controller
                 'id_estado_rembolso' => $request->id_estado_rembolso,
                 'monto_pagado' => $request->monto_pagado,
                 'fecha' => $request->fecha,
+                'concepto' => $request->concepto,
                 'beneficiario' => json_encode($request->beneficiario),
                 'grupo_interes' => json_encode($request->grupo_interes),
                 'responsable' => json_encode($request->responsable),

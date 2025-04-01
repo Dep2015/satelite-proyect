@@ -130,13 +130,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
   //apis accion estado atencion  delete
 
-  Route::post('/delete/estadodeatencion/{id_campo}', [AtencionEstadoController::class, 'deleteEstadoAtencion']);
+  Route::post('/delete/estadodeatencion/{id_campo}', [AtencionEstadoController::class, 'deleteAtencionEstados2']);
 
   //apis accion estado atencion  delete 2
 
   Route::post('/delete/estadodeatencion', [AtencionEstadoController::class, 'deleteEstadoAtencion2']);
 
-  Route::post('/delete/estadodeatencions', [AtencionEstadoController::class, 'deleteEstadoAtencion2']);
+  Route::post('/delete/estadodeatencions', [AtencionEstadoController::class, 'deleteAtencionEstados2']);
 
 
   // Obra Impuesto

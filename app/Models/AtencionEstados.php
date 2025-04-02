@@ -34,4 +34,8 @@ class AtencionEstados extends Model
     public function obraporimpuesto() {
         return $this->hasMany(ObraporImpuesto::class,'estado_id');
     }
+
+    public function atencion_estado() {
+        return $this->hasMany(AtencionEstados::class,'atencion_estado_id');
+    }
 }

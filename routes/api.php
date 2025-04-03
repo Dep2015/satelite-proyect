@@ -16,6 +16,7 @@ use App\Http\Controllers\EstadoRembolsoController;
 use App\Http\Controllers\PagosOIController;
 use App\Http\Controllers\InformacionContratistaController;
 use App\Http\Controllers\InformacionFinancistaController;
+use App\Http\Controllers\ActividadesEjecucionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -272,15 +273,15 @@ Route::middleware('auth:sanctum')->group(function () {
   // Actividades Etapas Ejecución
 
 
-  Route::post('/add/etapaejecucion', [InformacionContratistaController::class, 'addActividadesEjecucion']);
+  Route::post('/add/etapaejecucion', [ActividadesEjecucionController::class, 'addActividadesEjecucion']);
 
-  Route::get('/all/etapaejecucion', [InformacionContratistaController::class, 'allActividadesEjecucion']);
+  Route::get('/all/etapaejecucion', [ActividadesEjecucionController::class, 'allActividadesEjecucion']);
 
-  Route::get('/all/etapaejecucionporetapa', [InformacionContratistaController::class, 'allActividadesEjecucionporEtpa']);
+  Route::get('/all/etapaejecucionporetapa', [ActividadesEjecucionController::class, 'allActividadesEjecucionporEtpa']);
 
-  Route::post('/edit/etapaejecucion', [InformacionContratistaController::class, 'editActividadesEjecucion']);
+  Route::post('/edit/etapaejecucion', [ActividadesEjecucionController::class, 'editActividadesEjecucion']);
 
-  Route::post('/delete/etapaejecucion', [InformacionContratistaController::class, 'deleteActividadesEjecucion']);
+  Route::post('/delete/etapaejecucion', [ActividadesEjecucionController::class, 'deleteActividadesEjecucion']);
 
 
 

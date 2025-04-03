@@ -36,6 +36,6 @@ class AtencionEstados extends Model
     }
 
     public function atencion_estado() {
-        return $this->hasMany(AtencionEstados::class,'atencion_estado_id');
+        return $this->hasMany(ActividadesEjecucion::class,'atencion_estado_id');
     }
 }

@@ -89,7 +89,7 @@ class ActividadesEjecucionController extends Controller
 
         $validated = Validator::make($request->all(), [
              'id_empresa' => 'required|integer',
-             'tipo_estado_ejecucion_id' => 'required|integer',
+             'atencion_estado_id' => 'required|integer',
             ]);
 
            if($validated->fails()){
@@ -98,7 +98,7 @@ class ActividadesEjecucionController extends Controller
 
            try{
 
-            $itemsEstadoAtencion = ActividadesEjecucion::where('id_empresa', $request->id_empresa)->where('tipo_estado_ejecucion_id', $request->tipo_estado_ejecucion_id)->with(['atencion_estado:id,name',
+            $itemsEstadoAtencion = ActividadesEjecucion::where('id_empresa', $request->id_empresa)->where('atencion_estado_id', $request->atencion_estado_id)->with(['atencion_estado:id,name',
             'tipo_estado_etapa_ejecucion:id,name'])->get();
 
             return response()->json(

@@ -12,7 +12,7 @@ class AccionEstadoAtencion extends Model
     ];
 
 
-    public function estadoatencionv1() {
-        return $this->hasMany(AtencionEstados::class,'accion_id');
-    }
+   public function estadoatencionv1() {
+       return $this->hasMany(AtencionEstados::class,'accion_id');
+   }
 }

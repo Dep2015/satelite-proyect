@@ -25,11 +25,11 @@ class ActividadesEjecucion extends Model
 
     public function atencion_estado() {
 
-        return $this->belongsTo(AccionEstadoAtencion::class, 'atencion_estado_id');
+        return $this->belongsTo(AtencionEstados::class, 'atencion_estado_id');
     }
 
     public function tipo_estado_etapa_ejecucion() {
 
-        return $this->belongsTo(AccionEstadoAtencion::class, 'tipo_estado_ejecucion_id');
+        return $this->belongsTo(EstadoEtapaEjecucion::class, 'tipo_estado_ejecucion_id');
     }
 }

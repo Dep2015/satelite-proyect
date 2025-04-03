@@ -269,5 +269,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
+  // Actividades Etapas Ejecución
+
+
+  Route::post('/add/etapaejecucion', [InformacionContratistaController::class, 'addActividadesEjecucion']);
+
+  Route::get('/all/etapaejecucion', [InformacionContratistaController::class, 'allActividadesEjecucion']);
+
+  Route::get('/all/etapaejecucionporetapa', [InformacionContratistaController::class, 'allActividadesEjecucionporEtpa']);
+
+  Route::post('/edit/etapaejecucion', [InformacionContratistaController::class, 'editActividadesEjecucion']);
+
+  Route::post('/delete/etapaejecucion', [InformacionContratistaController::class, 'deleteActividadesEjecucion']);
+
+
+
 
 });

@@ -23,9 +23,9 @@ class PagosOIController extends Controller
             'grupo_interes' => 'required|nullable|array',
             'grupo_interes.*.id' => 'required|integer',
             'grupo_interes.*.nombre' => 'required|string|max:255',
-            'responsables' => 'required|nullable|array',
-            'responsables.*.id' => 'required|integer',
-            'responsables.*.nombre' => 'required|string|max:255',
+            'responsables' => 'nullable|array',
+            'responsables.*.id' => 'integer',
+            'responsables.*.nombre' => 'string|max:255',
             'id_empresa' => 'required|integer',
         ]);
 
@@ -73,9 +73,9 @@ class PagosOIController extends Controller
             'grupo_interes' => 'required|nullable|array',
             'grupo_interes.*.id' => 'required|integer',
             'grupo_interes.*.nombre' => 'required|string|max:255',
-            'responsables' => 'required|nullable|array',
-            'responsables.*.id' => 'required|integer',
-            'responsables.*.nombre' => 'required|string|max:255',
+            'responsables' => 'nullable|array',
+            'responsables.*.id' => 'integer',
+            'responsables.*.nombre' => 'string|max:255',
             ]);
 
            if($validated->fails()){

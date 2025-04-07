@@ -41,7 +41,7 @@ class InformacionContratistaController extends Controller
 
             return response()->json([
                 'message' => 'Pago ingresado con éxito',
-                'obra_id' => $pagos->id
+                'obra_id' => $contratista->id
             ], 200);
         } catch (\Exception $exception) {
             return response()->json([

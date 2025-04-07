@@ -40,8 +40,8 @@ class InformacionFinancistaController extends Controller
             $financista->save();
 
             return response()->json([
-                'message' => 'Pago ingresado con éxito',
-                'obra_id' => $pagos->id
+                'message' => 'financista ingresado con éxito',
+                'obra_id' => $financista->id
             ], 200);
         } catch (\Exception $exception) {
             return response()->json([

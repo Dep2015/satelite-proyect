@@ -18,9 +18,9 @@ class ActividadesEjecucionController extends Controller
             'comentarios' => 'required|string',
             'atencion_estado_id' => 'required|exists:atencion_estados,id',
             'tipo_estado_ejecucion_id'=>'required|exists:estado_etapa_ejecucions,id',
-            'responsable' => 'required|nullable|array',
-            'responsable.*.id' => 'required|integer',
-            'responsable.*.nombre' => 'required|string|max:255',
+            'responsables' => 'required|nullable|array',
+            'responsables.*.id' => 'required|integer',
+            'responsables.*.nombre' => 'required|string|max:255',
             'id_empresa' => 'required|integer',
         ]);
 
@@ -37,7 +37,7 @@ class ActividadesEjecucionController extends Controller
             $EstadoAtencion->comentarios = $request->comentarios;
             $EstadoAtencion->atencion_estado_id = $request->atencion_estado_id;
             $EstadoAtencion->tipo_estado_ejecucion_id = $request->tipo_estado_ejecucion_id;
-            $EstadoAtencion->responsable = $request->responsable;
+            $EstadoAtencion->responsables = $request->responsables;
             $EstadoAtencion->id_empresa = $request->id_empresa;
             $EstadoAtencion->save();
 
@@ -127,9 +127,9 @@ class ActividadesEjecucionController extends Controller
             'tipo_estado_ejecucion_id'=>'required|exists:estado_etapa_ejecucions,id',
 
             // Validación de responsable (array de objetos)
-            'responsable' => 'nullable|array',
-            'responsable.*.id' => 'required|integer',
-            'responsable.*.nombre' => 'required|string|max:255',
+            'responsables' => 'nullable|array',
+            'responsables.*.id' => 'required|integer',
+            'responsables.*.nombre' => 'required|string|max:255',
 
             'id_empresa' => 'required|integer',
         ]);
@@ -154,7 +154,7 @@ class ActividadesEjecucionController extends Controller
                 'comentarios' => $request->comentarios,
                 'atencion_estado_id' => $request->atencion_estado_id,
                 'tipo_estado_ejecucion_id' => $request->tipo_estado_ejecucion_id,
-                'responsable' => json_encode($request->responsable), // Guardar como JSON
+                'responsables' => json_encode($request->responsables), // Guardar como JSON
             ]);
 
             return response()->json([

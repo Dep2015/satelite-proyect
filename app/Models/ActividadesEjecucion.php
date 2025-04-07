@@ -13,6 +13,7 @@ class ActividadesEjecucion extends Model
         'fecha',
         'comentarios',
         'id_empresa',
+        'responsables',
         'atencion_estado_id',
         'tipo_estado_ejecucion_id',
 
@@ -20,7 +21,7 @@ class ActividadesEjecucion extends Model
     ];
 
     protected $casts = [
-        'responsable' => 'array',
+        'responsables' => 'array',
     ];
 
     public function atencion_estado() {

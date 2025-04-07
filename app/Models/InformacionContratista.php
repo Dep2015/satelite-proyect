@@ -17,7 +17,7 @@ class InformacionContratista extends Model
         ];
 
         protected $casts = [
-                 'id_categoria_documento' => 'array',
+                'id_categoria_documento' => 'array',
                 'responsables' => 'array',
         ];
 

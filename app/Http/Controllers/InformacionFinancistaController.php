@@ -35,7 +35,7 @@ class InformacionFinancistaController extends Controller
             $financista->aspecto = $request->aspecto;
             $financista->comentarios = $request->comentarios;
             $financista->id_categoria_documento = $request->id_categoria_documento;
-            $financista->responsable = $request->centros_operacion;
+            $financista->responsables = $request->responsables;
             $financista->id_empresa = $request->id_empresa;
             $financista->save();
 
@@ -79,7 +79,7 @@ class InformacionFinancistaController extends Controller
                 'aspecto' => $request->aspecto,
                 'comentarios' => $request->comentarios,
                 'id_categoria_documento' => json_encode($request->id_categoria_documento),
-                'responsable' => json_encode($request->responsable),
+                'responsables' => json_encode($request->responsables),
             ]);
 
             return response()->json(

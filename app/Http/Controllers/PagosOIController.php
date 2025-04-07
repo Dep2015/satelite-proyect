@@ -23,9 +23,9 @@ class PagosOIController extends Controller
             'grupo_interes' => 'required|nullable|array',
             'grupo_interes.*.id' => 'required|integer',
             'grupo_interes.*.nombre' => 'required|string|max:255',
-            'responsable' => 'required|nullable|array',
-            'responsable.*.id' => 'required|integer',
-            'responsable.*.nombre' => 'required|string|max:255',
+            'responsables' => 'required|nullable|array',
+            'responsables.*.id' => 'required|integer',
+            'responsables.*.nombre' => 'required|string|max:255',
             'id_empresa' => 'required|integer',
         ]);
 
@@ -41,9 +41,9 @@ class PagosOIController extends Controller
             $pagos->monto_pagado = $request->monto_pagado;
             $pagos->fecha = $request->fecha;
             $pagos->concepto = $request->concepto;
-            $pagos->beneficiario = $request->responsable;
+            $pagos->beneficiario = $request->beneficiario;
             $pagos->grupo_interes = $request->unidades_gestion;
-            $pagos->responsable = $request->centros_operacion;
+            $pagos->responsables = $request->responsables;
             $pagos->id_empresa = $request->id_empresa;
             $pagos->save();
 
@@ -73,9 +73,9 @@ class PagosOIController extends Controller
             'grupo_interes' => 'required|nullable|array',
             'grupo_interes.*.id' => 'required|integer',
             'grupo_interes.*.nombre' => 'required|string|max:255',
-            'responsable' => 'required|nullable|array',
-            'responsable.*.id' => 'required|integer',
-            'responsable.*.nombre' => 'required|string|max:255',
+            'responsables' => 'required|nullable|array',
+            'responsables.*.id' => 'required|integer',
+            'responsables.*.nombre' => 'required|string|max:255',
             ]);
 
            if($validated->fails()){
@@ -95,7 +95,7 @@ class PagosOIController extends Controller
                 'concepto' => $request->concepto,
                 'beneficiario' => json_encode($request->beneficiario),
                 'grupo_interes' => json_encode($request->grupo_interes),
-                'responsable' => json_encode($request->responsable),
+                'responsables' => json_encode($request->responsables),
             ]);
 
             return response()->json(

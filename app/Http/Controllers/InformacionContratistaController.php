@@ -35,7 +35,7 @@ class InformacionContratistaController extends Controller
             $contratista->aspecto = $request->aspecto;
             $contratista->comentarios = $request->comentarios;
             $contratista->id_categoria_documento = $request->id_categoria_documento;
-            $contratista->responsable = $request->centros_operacion;
+            $contratista->responsables = $request->responsables;
             $contratista->id_empresa = $request->id_empresa;
             $contratista->save();
 
@@ -79,7 +79,7 @@ class InformacionContratistaController extends Controller
                 'aspecto' => $request->aspecto,
                 'comentarios' => $request->comentarios,
                 'id_categoria_documento' => json_encode($request->id_categoria_documento),
-                'responsable' => json_encode($request->responsable),
+                'responsables' => json_encode($request->responsables),
             ]);
 
             return response()->json(

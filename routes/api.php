@@ -17,6 +17,7 @@ use App\Http\Controllers\PagosOIController;
 use App\Http\Controllers\InformacionContratistaController;
 use App\Http\Controllers\InformacionFinancistaController;
 use App\Http\Controllers\ActividadesEjecucionController;
+use App\Http\Controllers\Archivos3Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -50,6 +51,9 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/delete/tipoestadoatencion/{id_tipo}', [TipoEstadoAtencionController::class, 'deleteTipoEstadoAtencion']);
 
   //apis Tipo delete 2
+
+
+
 
   Route::post('/delete/tipoestadoatencion', [TipoEstadoAtencionController::class, 'deleteTipoEstadoAtencion2']);
 
@@ -284,6 +288,12 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/delete/etapaejecucion', [ActividadesEjecucionController::class, 'deleteActividadesEjecucion']);
 
 
+ // Subirt archivos S3
 
+Route::post('/archivospago/subir', [Archivos3Controller::class, 'subirPago']);
+
+Route::get('/archivospago', [Archivos3Controller::class, 'listarPago']);
+
+Route::delete('/archivospago/{id}', [Archivos3Controller::class, 'eliminarPago']);
 
 });

@@ -54,6 +54,7 @@ class InformacionContratistaController extends Controller
     public function editInformacionContratista(Request $request){
 
         $validated = Validator::make($request->all(), [
+            'id' => 'required|integer',
             'id_tipo_contratista' => 'required|exists:tipo_contratistas,id',
             'aspecto' => 'required|string|max:255',
             'comentarios' => 'required|string',

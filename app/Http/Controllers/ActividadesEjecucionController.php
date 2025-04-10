@@ -119,6 +119,7 @@ class ActividadesEjecucionController extends Controller
     {
         // Validar los datos recibidos
         $validated = Validator::make($request->all(), [
+            'id' => 'required|integer',
             'secuencia_id'=>'required|integer',
             'name' => 'required|string|max:255',
             'fecha' => 'required|date',

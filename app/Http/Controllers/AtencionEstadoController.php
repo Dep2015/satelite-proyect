@@ -62,6 +62,7 @@ class AtencionEstadoController extends Controller
     public function editAtencionEstados(Request $request){
 
         $validated = Validator::make($request->all(), [
+            'id' => 'required|integer',
             'name' => 'required|string|max:255',
             'color'  => 'required|string|max:255',
             'irechazo'  => 'required|string|max:255',

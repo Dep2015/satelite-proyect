@@ -62,6 +62,7 @@ class PagosOIController extends Controller
     public function editPagosOI(Request $request){
 
         $validated = Validator::make($request->all(), [
+            'id' => 'required|integer',
             'id_tipo_gasto' => 'required|exists:tipo_gastos,id',
             'id_estado_rembolso' => 'required|exists:estado_rembolsos,id',
             'monto_pagado' => 'required|numeric|min:0',
@@ -114,6 +115,45 @@ class PagosOIController extends Controller
 
     }
 
+
+
+    public function editPagosOIEstado(Request $request){
+
+        $validated = Validator::make($request->all(), [
+            'id' => 'required|integer',
+            'id_estado_rembolso' => 'required|exists:estado_rembolsos,id',
+            ]);
+
+           if($validated->fails()){
+               return response()->json($validated->errors(),403);
+           }
+
+           try{
+
+            $tipoPagosOI_data = PagosOI::find($request->id);
+
+
+           $updatePagosOI = $tipoPagosOI_data->update([
+
+                'id_estado_rembolso' => $request->id_estado_rembolso,
+
+            ]);
+
+            return response()->json(
+                [
+                    'message'=> 'Tipo updated Succeccfully',
+                    'data' => $updatePagosOI,
+                ],200 );
+
+           }catch(\Exception $exception){
+
+            return response()->json([
+                'error'=> $exception->getMessage(),
+                ],403);
+
+           }
+
+    }
 
 
     public function deletePagosOI(Request $request)

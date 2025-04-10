@@ -249,6 +249,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
   Route::post('/delete/pagosois', [PagosOIController::class, 'deletePagosOI']);
 
+  Route::post('/edit/pagosoiestado', [PagosOIController::class, 'editPagosOIEstado']);
+
 
         // Informacion Financista
 

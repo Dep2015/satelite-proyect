@@ -56,7 +56,7 @@ class Archivos3Controller extends Controller
         $archivo = Archivos3::create([
             'nombre_original' => $originalName,
             'path' => $path,
-            'tipo' => $tipo,
+            'tipo' => $request->$tipo,
             'categoria' => $request->categoria,
             'codigo_registro' => $request->codigo_registro,
             'empresa_id' => $request->empresa_id,

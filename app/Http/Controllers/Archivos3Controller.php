@@ -49,7 +49,7 @@ class Archivos3Controller extends Controller
             'Bucket' => $this->bucket,
             'Key'    => $path,
             'Body'   => file_get_contents($file),
-            'ACL'    => 'public-read',
+           // 'ACL'    => 'public-read',
         ]);
 
         $archivo = Archivo::create([

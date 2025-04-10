@@ -36,28 +36,23 @@ class Archivos3Controller extends Controller
             'categoria' => 'required|integer',
             'codigo_registro' => 'required|integer',
             'empresa_id' => 'required|integer',
-            'tipo' => 'required|integer' // 1 = imagen, 2 = documento
+            'tipo' => 'required|integer' // solo se guarda, NO se usa para validar
         ]);
 
         $file = $request->file('archivo');
         $originalName = $file->getClientOriginalName();
         $extension = strtolower($file->getClientOriginalExtension());
 
-        // Determinar tipo real por la extensión
-        $esImagen = in_array($extension, ['jpg', 'jpeg', 'png']);
-        $esDocumento = in_array($extension, ['pdf', 'doc', 'docx', 'xls', 'xlsx']);
-
-        // Validar que el tipo enviado coincida con el tipo real
-        if ($request->tipo == 1 && !$esImagen) {
-            return response()->json(['error' => 'El archivo no es una imagen válida.'], 422);
+        // Determinar carpeta según extensión del archivo
+        if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
+            $carpeta = 'imagenes';
+        } elseif (in_array($extension, ['pdf', 'doc', 'docx', 'xls', 'xlsx'])) {
+            $carpeta = 'documentos';
+        } else {
+            return response()->json(['error' => 'Extensión de archivo no válida.'], 422);
         }
 
-        if ($request->tipo == 2 && !$esDocumento) {
-            return response()->json(['error' => 'El archivo no es un documento válido.'], 422);
-        }
-
-        // Definir carpeta según tipo enviado
-        $carpeta = $request->tipo == 1 ? 'imagenes' : 'documentos';
+        // Generar path en S3 según carpeta
         $path = "pagos/{$carpeta}/" . Str::random(8) . "_" . $originalName;
 
         // Subir archivo a S3
@@ -67,11 +62,11 @@ class Archivos3Controller extends Controller
             'Body'   => file_get_contents($file),
         ]);
 
-        // Guardar en base de datos
+        // Guardar en base de datos (guardamos el tipo numérico tal como vino del frontend)
         $archivo = Archivos3::create([
             'nombre_original'   => $originalName,
             'path'              => $path,
-            'tipo'              => $request->tipo, // se guarda como número
+            'tipo'              => $request->tipo, // guardamos el número tal cual
             'categoria'         => $request->categoria,
             'codigo_registro'   => $request->codigo_registro,
             'empresa_id'        => $request->empresa_id,

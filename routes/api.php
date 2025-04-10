@@ -292,6 +292,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/archivospago/subir', [Archivos3Controller::class, 'subirPago']);
 
+Route::post('/archivos/subir', [Archivos3Controller::class, 'subirArchivo']);
+
 Route::get('/archivospago', [Archivos3Controller::class, 'listarPago']);
 
 Route::delete('/archivospago/{id}', [Archivos3Controller::class, 'eliminarPago']);

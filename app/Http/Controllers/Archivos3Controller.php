@@ -52,7 +52,7 @@ class Archivos3Controller extends Controller
            // 'ACL'    => 'public-read',
         ]);
 
-        $archivo = Archivo::create([
+        $archivo = Archivos3::create([
             'nombre_original' => $originalName,
             'path' => $path,
             'tipo' => $tipo,
@@ -71,7 +71,7 @@ class Archivos3Controller extends Controller
             'empresa_id' => 'required|integer',
         ]);
 
-        $archivos = Archivo::where('codigo_registro', $request->codigo_registro)
+        $archivos = Archivos3::where('codigo_registro', $request->codigo_registro)
             ->where('empresa_id', $request->empresa_id)
             ->get()
             ->map(function ($archivo) {
@@ -88,7 +88,7 @@ class Archivos3Controller extends Controller
             'codigo_registro' => 'required|string',
         ]);
 
-        $archivo = Archivo::where('id', $id)
+        $archivo = Archivos3::where('id', $id)
             ->where('codigo_registro', $request->codigo_registro)
             ->first();
 

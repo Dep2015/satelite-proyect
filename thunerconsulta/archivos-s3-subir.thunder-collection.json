@@ -1,0 +1,75 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Archivos S3 API",
+    "collections": [
+      {
+        "name": "Subir archivo de pago",
+        "method": "POST",
+        "url": "http://localhost:8000/api/archivos/subir",
+        "headers": [
+          {
+            "name": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "type": "formdata",
+          "formdata": [
+            {
+              "name": "archivo",
+              "value": "",
+              "type": "file"
+            },
+            {
+              "name": "categoria",
+              "value": "1",
+              "type": "text"
+            },
+            {
+              "name": "codigo_registro",
+              "value": "123",
+              "type": "text"
+            },
+            {
+              "name": "empresa_id",
+              "value": "999",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Listar archivos",
+        "method": "GET",
+        "url": "http://localhost:8000/api/archivos?codigo_registro=123&empresa_id=999",
+        "headers": [
+          {
+            "name": "Accept",
+            "value": "application/json"
+          }
+        ]
+      },
+      {
+        "name": "Eliminar archivo",
+        "method": "DELETE",
+        "url": "http://localhost:8000/api/archivos/1",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "raw": {
+            "codigo_registro": "123",
+            "empresa_id": 999
+          }
+        }
+      }
+    ]
+  }

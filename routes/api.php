@@ -149,6 +149,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
   Route::post('/add/obraporimpuesto', [ObraporImpuestoController::class, 'addObraporImpuesto']);
 
+  Route::post('/add/obraporimpuestov2', [ObraporImpuestoController::class, 'addObraporImpuestov2']);
+
   Route::get('/all/obraporimpuesto', [ObraporImpuestoController::class, 'allObraporImpuesto']);
 
   Route::post('/edit/obraporimpuesto', [ObraporImpuestoController::class, 'editObraporImpuesto']);

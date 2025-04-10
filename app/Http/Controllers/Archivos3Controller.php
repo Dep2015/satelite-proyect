@@ -35,13 +35,14 @@ class Archivos3Controller extends Controller
             'archivo' => 'required|file|mimes:jpeg,png,jpg,pdf,doc,docx,xls,xlsx',
             'categoria' => 'required|integer',
             'codigo_registro' => 'required|integer',
+            'tipo' => 'required|integer',
             'empresa_id' => 'required|integer',
         ]);
 
         $file = $request->file('archivo');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
-        $tipo = in_array(strtolower($extension), ['jpg', 'jpeg', 'png']) ? 'imagenes' : 'documentos';
+       // $tipo = in_array(strtolower($extension), ['jpg', 'jpeg', 'png']) ? 'imagenes' : 'documentos';
 
         $path = "pagos/{$tipo}/" . Str::random(8) . "_" . $originalName;
 

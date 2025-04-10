@@ -16,6 +16,7 @@ class ActividadesEjecucion extends Model
         'responsables',
         'atencion_estado_id',
         'tipo_estado_ejecucion_id',
+        'id_obra_impuesto',
 
 
     ];

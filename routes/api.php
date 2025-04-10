@@ -285,6 +285,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
   Route::post('/edit/etapaejecucion', [ActividadesEjecucionController::class, 'editActividadesEjecucion']);
 
+  Route::post('/edit/estadoetapaejecucion', [ActividadesEjecucionController::class, 'editActividadesEjecucionTipo']);
+
   Route::post('/delete/etapaejecucion', [ActividadesEjecucionController::class, 'deleteActividadesEjecucion']);
 
 

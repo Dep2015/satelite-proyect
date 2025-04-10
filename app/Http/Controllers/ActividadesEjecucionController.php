@@ -170,6 +170,47 @@ class ActividadesEjecucionController extends Controller
         }
     }
 
+
+
+    public function editActividadesEjecucionTipo(Request $request)
+    {
+        // Validar los datos recibidos
+        $validated = Validator::make($request->all(), [
+           'tipo_estado_ejecucion_id'=>'required|exists:estado_etapa_ejecucions,id',
+            'id_empresa' => 'required|integer',
+        ]);
+
+        // Si la validación falla, devolver error
+        if ($validated->fails()) {
+            return response()->json([
+                'error' => 'Error de validación',
+                'messages' => $validated->errors()
+            ], 403);
+        }
+
+        try {
+            // Buscar la obra en la base de datos
+            $actividad = ActividadesEjecucion::findOrFail($request->id);
+
+            // Actualizar los datos
+            $actividad->update([
+
+                'tipo_estado_ejecucion_id' => $request->tipo_estado_ejecucion_id,
+            ]);
+
+            return response()->json([
+                'message' => 'Actividad actualizada con éxito',
+                'obra' => $actividad
+            ], 200);
+
+        } catch (\Exception $exception) {
+            return response()->json([
+                'error' => 'Error al actualizar la obra',
+                'message' => $exception->getMessage()
+            ], 500);
+        }
+    }
+
     public function deleteActividadesEjecucion(Request $request)
     {
         $validated = Validator::make($request->all(), [

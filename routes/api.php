@@ -294,7 +294,7 @@ Route::post('/archivospago/subir', [Archivos3Controller::class, 'subirPago']);
 
 Route::post('/archivos/subir', [Archivos3Controller::class, 'subirArchivo']);
 
-Route::get('/archivospago', [Archivos3Controller::class, 'listarPago']);
+Route::get('/archivos/all', [Archivos3Controller::class, 'listarArchvio']);
 
 Route::delete('/archivospago/{id}', [Archivos3Controller::class, 'eliminarPago']);
 

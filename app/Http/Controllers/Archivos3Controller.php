@@ -123,7 +123,7 @@ class Archivos3Controller extends Controller
 }
 
 
-    public function listarPago(Request $request)
+    public function listarArchvio(Request $request)
     {
         $request->validate([
             'codigo_registro' => 'required|integer',

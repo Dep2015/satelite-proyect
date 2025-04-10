@@ -18,6 +18,7 @@ use App\Http\Controllers\InformacionContratistaController;
 use App\Http\Controllers\InformacionFinancistaController;
 use App\Http\Controllers\ActividadesEjecucionController;
 use App\Http\Controllers\Archivos3Controller;
+use App\Http\Controllers\ArchivoS32Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -299,5 +300,12 @@ Route::post('/archivos/subir', [Archivos3Controller::class, 'subirArchivo']);
 Route::get('/archivos/all', [Archivos3Controller::class, 'listarArchvio']);
 
 Route::delete('/archivospago/{id}', [Archivos3Controller::class, 'eliminarPago']);
+
+
+
+ // Subirt archivos S3 V22
+
+
+ Route::post('/archivos3/subir', [ArchivoS32Controller::class, 'subirArchivo']);
 
 });

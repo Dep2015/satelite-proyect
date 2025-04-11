@@ -262,6 +262,9 @@ class ObraporImpuestoController extends Controller
     }
 
     try {
+
+        ActividadesEjecucion::where('id_obra_impuesto', $request->id)->delete();
+
         $obra = ObraporImpuesto::findOrFail($request->id);
         $obra->delete();
 

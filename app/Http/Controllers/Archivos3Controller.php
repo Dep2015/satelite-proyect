@@ -123,7 +123,7 @@ class Archivos3Controller extends Controller
 }
 
 
-    public function listarArchvio(Request $request)
+    public function listarArchvio2(Request $request)
     {
         $request->validate([
             'codigo_registro' => 'required|integer',
@@ -144,6 +144,42 @@ class Archivos3Controller extends Controller
 
         return response()->json($archivos);
     }
+
+    public function listarArchivo(Request $request)
+    {
+        $request->validate([
+            'codigo_registro' => 'required|integer',
+            'empresa_id' => 'required|integer',
+            'carpeta_base' => 'required|string'
+        ]);
+
+        $carpetaBase = trim($request->carpeta_base, '/');
+
+        $archivos = Archivos3::where('codigo_registro', $request->codigo_registro)
+            ->where('empresa_id', $request->empresa_id)
+            ->where('path', 'like', "{$carpetaBase}/%")
+            ->get()
+            ->map(function ($archivo) {
+                $extension = strtolower(pathinfo($archivo->path, PATHINFO_EXTENSION));
+
+                // Generar URL firmada por 10 minutos
+                $cmd = $this->s3->getCommand('GetObject', [
+                    'Bucket' => $this->bucket,
+                    'Key'    => $archivo->path,
+                ]);
+                $requestUrl = $this->s3->createPresignedRequest($cmd, '+10 minutes');
+                $archivo->url = (string) $requestUrl->getUri();
+
+                // Flags para usar en el frontend
+                $archivo->esImagen = in_array($extension, ['jpg', 'jpeg', 'png']);
+                $archivo->esPDF = $extension === 'pdf';
+
+                return $archivo;
+            });
+
+        return response()->json($archivos);
+    }
+
 
     public function eliminar(Request $request, $id)
     {

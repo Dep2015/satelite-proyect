@@ -112,6 +112,15 @@ class ObraporImpuestoController extends Controller
             [1, 'Realizar el Proceso de Selección', 3, 1],
             [1, 'Realizar la suscripción de Convenio', 4, 1],
             [2, 'Realizar el suscripción de contrato de la Supervisión del Proyecto', 4, 1],
+            [3, 'Realizar modificación de Estudios', 4, 1],
+            [4, 'Aprobar el Estudio definitivo expediente de operación y/o mantenimiento', 4, 1],
+            [5, 'Aprobar la Sustitución del Ejecutor de Proyecto', 4, 1],
+            [6, 'Aprobar la ampliación de plazos', 4, 1],
+            [7, 'Realizar la culminación y recepción del proyecto', 4, 1],
+            [8, 'Aprobar la liquidación del proyecto', 4, 1],
+            [9, 'Emitir conformidad de Mantenimiento u Operación', 4, 1],
+            [1, 'Emitir el CIPRL o CIPGN',5, 1],
+            [2, 'Emitir el CIPRL o CIPGN por Avance de Obra', 5, 1],
         ];
 
         foreach ($actividadesBase as [$secuencia, $nombre, $atencionEstado, $tipoEstado]) {

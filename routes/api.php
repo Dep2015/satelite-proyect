@@ -303,7 +303,7 @@ Route::post('/archivos/subir', [Archivos3Controller::class, 'subirArchivo']);
 
 Route::get('/archivos/all', [Archivos3Controller::class, 'listarArchvio']);
 
-Route::delete('/archivospago/{id}', [Archivos3Controller::class, 'eliminarPago']);
+Route::delete('/archivosdelete/{id}', [Archivos3Controller::class, 'eliminar']);
 
 
 

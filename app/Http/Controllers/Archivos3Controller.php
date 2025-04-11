@@ -145,7 +145,7 @@ class Archivos3Controller extends Controller
         return response()->json($archivos);
     }
 
-    public function eliminarPago(Request $request, $id)
+    public function eliminar(Request $request, $id)
     {
         $request->validate([
             'codigo_registro' => 'required|string',

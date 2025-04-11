@@ -128,10 +128,14 @@ class Archivos3Controller extends Controller
         $request->validate([
             'codigo_registro' => 'required|integer',
             'empresa_id' => 'required|integer',
+            'carpeta_base' => 'required|string'
         ]);
+
+        $carpetaBase = trim($request->carpeta_base, '/');
 
         $archivos = Archivos3::where('codigo_registro', $request->codigo_registro)
             ->where('empresa_id', $request->empresa_id)
+            ->where('path', 'like', "{$carpetaBase}/%")
             ->get()
             ->map(function ($archivo) {
                 $archivo->url = "https://s3.amazonaws.com/" . env('AWS_BUCKET') . "/{$archivo->path}";

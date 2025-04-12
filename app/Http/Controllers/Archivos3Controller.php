@@ -123,7 +123,7 @@ class Archivos3Controller extends Controller
 }
 
 
-    public function listarArchvio2(Request $request)
+    public function listarArchvio21(Request $request)
     {
         $request->validate([
             'codigo_registro' => 'required|integer',
@@ -139,6 +139,36 @@ class Archivos3Controller extends Controller
             ->get()
             ->map(function ($archivo) {
                 $archivo->url = "https://s3.amazonaws.com/" . env('AWS_BUCKET') . "/{$archivo->path}";
+                return $archivo;
+            });
+
+        return response()->json($archivos);
+    }
+
+
+    public function listarArchvio2(Request $request)
+    {
+        $request->validate([
+            'codigo_registro' => 'required|integer',
+            'empresa_id' => 'required|integer',
+            'carpeta_base' => 'required|string'
+        ]);
+
+        $carpetaBase = trim($request->carpeta_base, '/');
+
+        $archivos = Archivos3::where('codigo_registro', $request->codigo_registro)
+            ->where('empresa_id', $request->empresa_id)
+            ->where('path', 'like', "{$carpetaBase}/%")
+            ->get()
+            ->map(function ($archivo) {
+                $extension = strtolower(pathinfo($archivo->path, PATHINFO_EXTENSION));
+
+                // URL pública directa (asumimos que el bucket permite lectura pública)
+                $archivo->url = "https://{$this->bucket}.s3.amazonaws.com/{$archivo->path}";
+
+                $archivo->esImagen = in_array($extension, ['jpg', 'jpeg', 'png']);
+                $archivo->esPDF = $extension === 'pdf';
+
                 return $archivo;
             });
 

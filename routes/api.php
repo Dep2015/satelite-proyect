@@ -136,7 +136,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
   //apis accion estado atencion  delete
 
-  Route::post('/delete/estadodeatencion/{id_campo}', [AtencionEstadoController::class, 'deleteAtencionEstados2']);
+  Route::post('/delete/estadodeatencion/{id_campo}', [AtencionEstadoController::class, 'deleteAtencionEstados']);
 
   //apis accion estado atencion  delete 2
 

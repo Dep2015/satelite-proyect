@@ -143,19 +143,24 @@ class TipoGastoController extends Controller
 
     public function deleteTipoGasto(Request $request, $id_tipo){
 
-        try{
-            $tipoTipoGasto = TipoGasto::find($id_tipo);
-            $tipoTipoGasto->delete();
-            return response()->json(
-                [
-                    'message'=> 'Tipo delete Succeccfully'
-                ],200 );
+        try {
+            $tipo = TipoGasto::findOrFail($id_tipo);
+            $tipo->delete();
 
-
-        } catch(\Exception $exceptiondelete){
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),
-                ],403);
+                'message' => 'Tipo de gasto eliminado con éxito'
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'El tipo de gasto con el ID proporcionado no existe'
+            ], 404);
+
+        } catch (\Exception $exceptiondelete) {
+            return response()->json([
+                'error' => 'Error al eliminar el tipo de gasto',
+                'message' => $exceptiondelete->getMessage()
+            ], 500);
         }
     }
 
@@ -164,25 +169,33 @@ class TipoGastoController extends Controller
 
         $validated = Validator::make($request->all(), [
             'id' => 'required|integer',
-           ]);
+        ]);
 
-          if($validated->fails()){
-              return response()->json($validated->errors(),403);
-          }
-
-        try{
-            $tipoTipoGasto = TipoGasto::find($request->id);
-            $tipoTipoGasto->delete();
-            return response()->json(
-                [
-                    'message'=> 'Tipo delete Succeccfully'
-                ],200 );
-
-
-        } catch(\Exception $exceptiondelete){
+        if ($validated->fails()) {
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),
-                ],403);
+                'error' => 'Error de validación',
+                'messages' => $validated->errors()
+            ], 403);
+        }
+
+        try {
+            $tipo = TipoGasto::findOrFail($request->id);
+            $tipo->delete();
+
+            return response()->json([
+                'message' => 'Tipo de gasto eliminado con éxito'
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'El tipo de gasto con el ID proporcionado no existe'
+            ], 404);
+
+        } catch (\Exception $exceptiondelete) {
+            return response()->json([
+                'error' => 'Error al eliminar el tipo de gasto',
+                'message' => $exceptiondelete->getMessage()
+            ], 500);
         }
     }
 

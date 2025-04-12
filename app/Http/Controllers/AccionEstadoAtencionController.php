@@ -13,13 +13,13 @@ class AccionEstadoAtencionController extends Controller
             'name' => 'required|string|max:255',
             'id_empresa' => 'required|integer',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
 
            try {
-            
+
             $AccionEstadoAtencion = new AccionEstadoAtencion();
             $AccionEstadoAtencion->name = $request->name;
             $AccionEstadoAtencion->id_empresa = $request->id_empresa;
@@ -34,7 +34,7 @@ class AccionEstadoAtencionController extends Controller
 
            } catch (\Exception $exception) {
             return response()->json([
-                'error'=> $exception->getMessage(),  
+                'error'=> $exception->getMessage(),
                 ],403);
            }
     }
@@ -45,7 +45,7 @@ class AccionEstadoAtencionController extends Controller
             'name' => 'required|string|max:255',
             'id' => 'required|integer',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
@@ -67,7 +67,7 @@ class AccionEstadoAtencionController extends Controller
 
         } catch (\Exception $exceptionedit) {
             return response()->json([
-                'error'=> $exceptionedit->getMessage(),  
+                'error'=> $exceptionedit->getMessage(),
                 ],403);
         }
     }
@@ -77,7 +77,7 @@ class AccionEstadoAtencionController extends Controller
         $validated = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
@@ -99,18 +99,18 @@ class AccionEstadoAtencionController extends Controller
 
         } catch (\Exception $exceptionedit) {
             return response()->json([
-                'error'=> $exceptionedit->getMessage(),  
+                'error'=> $exceptionedit->getMessage(),
                 ],403);
         }
     }
 
 
     public function allAccionEstadoAtencion(Request $request){
-    
+
         $validated = Validator::make($request->all(), [
              'id_empresa' => 'required|integer',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
@@ -127,29 +127,35 @@ class AccionEstadoAtencionController extends Controller
 
            }catch(\Exception $exceptionall){
             return response()->json([
-                'error'=> $exceptionall->getMessage(),  
+                'error'=> $exceptionall->getMessage(),
                 ],403);
            }
-    
+
 }
 
 
-    
+
 public function deleteAccionEstadoAtencion(Request $request, $id_campo){
 
-    try{
-        $AccionEstadoAtencion = AccionEstadoAtencion::find($id_campo);
-        $AccionEstadoAtencion->delete();
-        return response()->json(
-            [
-                'message'=> 'Acción delete Succeccfully'
-            ],200 );
+    try {
+        $accion = AccionEstadoAtencion::findOrFail($id_campo);
 
+        $accion->delete();
 
-    } catch(\Exception $exceptiondelete){
         return response()->json([
-            'error'=> $exceptiondelete->getMessage(),  
-            ],403);
+            'message' => 'Acción eliminada con éxito'
+        ], 200);
+
+    } catch (ModelNotFoundException $e) {
+        return response()->json([
+            'error' => 'La acción con el ID proporcionado no existe'
+        ], 404);
+
+    } catch (\Exception $exceptiondelete) {
+        return response()->json([
+            'error' => 'Error al eliminar la acción',
+            'message' => $exceptiondelete->getMessage()
+        ], 500);
     }
 }
 
@@ -159,25 +165,34 @@ public function deleteAccionEstadoAtencion2(Request $request){
 
     $validated = Validator::make($request->all(), [
         'id' => 'required|integer',
-        ]);
-       
-       if($validated->fails()){
-           return response()->json($validated->errors(),403);
-       }
+    ]);
 
-    try{
-        $AccionEstadoAtencion = AccionEstadoAtencion::find($request->id);
-        $AccionEstadoAtencion->delete();
-        return response()->json(
-            [
-                'message'=> 'Acción delete Succeccfully'
-            ],200 );
-
-
-    } catch(\Exception $exceptiondelete){
+    if ($validated->fails()) {
         return response()->json([
-            'error'=> $exceptiondelete->getMessage(),  
-            ],403);
+            'error' => 'Error de validación',
+            'messages' => $validated->errors()
+        ], 403);
+    }
+
+    try {
+        $accion = AccionEstadoAtencion::findOrFail($request->id);
+
+        $accion->delete();
+
+        return response()->json([
+            'message' => 'Acción eliminada con éxito'
+        ], 200);
+
+    } catch (ModelNotFoundException $e) {
+        return response()->json([
+            'error' => 'La acción con el ID proporcionado no existe'
+        ], 404);
+
+    } catch (\Exception $exceptiondelete) {
+        return response()->json([
+            'error' => 'Error al eliminar la acción',
+            'message' => $exceptiondelete->getMessage()
+        ], 500);
     }
 }
 

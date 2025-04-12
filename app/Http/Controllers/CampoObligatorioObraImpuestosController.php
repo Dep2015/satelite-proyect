@@ -15,13 +15,13 @@ class CampoObligatorioObraImpuestosController extends Controller
             'obligatorio' => 'required|integer',
             'id_empresa' => 'required|integer',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
 
            try {
-            
+
             $CampoObligatorioObraImpuestos = new CampoObligatorioObraImpuestos();
             $CampoObligatorioObraImpuestos->name = $request->name;
             $CampoObligatorioObraImpuestos->habilitardeshabilitar = $request->habilitardeshabilitar;
@@ -38,7 +38,7 @@ class CampoObligatorioObraImpuestosController extends Controller
 
            } catch (\Exception $exception) {
             return response()->json([
-                'error'=> $exception->getMessage(),  
+                'error'=> $exception->getMessage(),
                 ],403);
            }
     }
@@ -51,7 +51,7 @@ class CampoObligatorioObraImpuestosController extends Controller
             'obligatorio' => 'required|integer',
             'id' => 'required|integer',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
@@ -75,7 +75,7 @@ class CampoObligatorioObraImpuestosController extends Controller
 
         } catch (\Exception $exceptionedit) {
             return response()->json([
-                'error'=> $exceptionedit->getMessage(),  
+                'error'=> $exceptionedit->getMessage(),
                 ],403);
         }
     }
@@ -87,7 +87,7 @@ class CampoObligatorioObraImpuestosController extends Controller
             'habilitardeshabilitar' => 'required|integer',
             'obligatorio' => 'required|integer',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
@@ -111,18 +111,18 @@ class CampoObligatorioObraImpuestosController extends Controller
 
         } catch (\Exception $exceptionedit) {
             return response()->json([
-                'error'=> $exceptionedit->getMessage(),  
+                'error'=> $exceptionedit->getMessage(),
                 ],403);
         }
     }
 
 
     public function allCampoObligatorioObraImpuestos(Request $request){
-    
+
         $validated = Validator::make($request->all(), [
              'id_empresa' => 'required|integer',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
@@ -139,29 +139,34 @@ class CampoObligatorioObraImpuestosController extends Controller
 
            }catch(\Exception $exceptionall){
             return response()->json([
-                'error'=> $exceptionall->getMessage(),  
+                'error'=> $exceptionall->getMessage(),
                 ],403);
            }
-    
+
     }
 
 
-    
+
     public function deleteCampoObligatorioObraImpuestos(Request $request, $id_campo){
 
-        try{
-            $CampoObligatorioObraImpuestos = CampoObligatorioObraImpuestos::find($id_campo);
-            $CampoObligatorioObraImpuestos->delete();
-            return response()->json(
-                [
-                    'message'=> 'Tipo delete Succeccfully'
-                ],200 );
+        try {
+            $campo = CampoObligatorioObraImpuestos::findOrFail($id_campo);
+            $campo->delete();
 
-
-        } catch(\Exception $exceptiondelete){
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),  
-                ],403);
+                'message' => 'Campo obligatorio eliminado con éxito'
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'El campo con el ID proporcionado no existe'
+            ], 404);
+
+        } catch (\Exception $exceptiondelete) {
+            return response()->json([
+                'error' => 'Error al eliminar el campo obligatorio',
+                'message' => $exceptiondelete->getMessage()
+            ], 500);
         }
     }
 
@@ -171,25 +176,33 @@ class CampoObligatorioObraImpuestosController extends Controller
 
         $validated = Validator::make($request->all(), [
             'id' => 'required|integer',
-            ]);
-           
-           if($validated->fails()){
-               return response()->json($validated->errors(),403);
-           }
+        ]);
 
-        try{
-            $CampoObligatorioObraImpuestos = CampoObligatorioObraImpuestos::find($request->id);
-            $CampoObligatorioObraImpuestos->delete();
-            return response()->json(
-                [
-                    'message'=> 'Tipo delete Succeccfully'
-                ],200 );
-
-
-        } catch(\Exception $exceptiondelete){
+        if ($validated->fails()) {
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),  
-                ],403);
+                'error' => 'Error de validación',
+                'messages' => $validated->errors()
+            ], 403);
+        }
+
+        try {
+            $campo = CampoObligatorioObraImpuestos::findOrFail($request->id);
+            $campo->delete();
+
+            return response()->json([
+                'message' => 'Campo obligatorio eliminado con éxito'
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'El campo obligatorio con el ID proporcionado no existe'
+            ], 404);
+
+        } catch (\Exception $exceptiondelete) {
+            return response()->json([
+                'error' => 'Error al eliminar el campo obligatorio',
+                'message' => $exceptiondelete->getMessage()
+            ], 500);
         }
     }
 }

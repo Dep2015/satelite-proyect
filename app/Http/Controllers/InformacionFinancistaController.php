@@ -119,12 +119,17 @@ class InformacionFinancistaController extends Controller
         $financista->delete();
 
         return response()->json([
-            'message' => 'Pago eliminado con éxito'
+            'message' => 'Financista eliminado con éxito'
         ], 200);
+
+    } catch (ModelNotFoundException $e) {
+        return response()->json([
+            'error' => 'El financista con el ID proporcionado no existe'
+        ], 404);
 
     } catch (\Exception $exceptiondelete) {
         return response()->json([
-            'error' => 'Error al eliminar el pago',
+            'error' => 'Error al eliminar el financista',
             'message' => $exceptiondelete->getMessage()
         ], 500);
     }

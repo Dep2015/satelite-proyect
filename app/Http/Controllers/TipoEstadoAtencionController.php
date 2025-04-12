@@ -144,19 +144,24 @@ class TipoEstadoAtencionController extends Controller
 
     public function deleteTipoEstadoAtencion(Request $request, $id_tipo){
 
-        try{
-            $tipoEstadoAtencion = TipoEstadoAtencion::find($id_tipo);
+        try {
+            $tipoEstadoAtencion = TipoEstadoAtencion::findOrFail($id_tipo);
             $tipoEstadoAtencion->delete();
-            return response()->json(
-                [
-                    'message'=> 'Tipo delete Succeccfully'
-                ],200 );
 
-
-        } catch(\Exception $exceptiondelete){
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),
-                ],403);
+                'message' => 'Tipo de estado de atención eliminado con éxito'
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'El tipo de estado de atención con el ID proporcionado no existe'
+            ], 404);
+
+        } catch (\Exception $exceptiondelete) {
+            return response()->json([
+                'error' => 'Error al eliminar el tipo de estado de atención',
+                'message' => $exceptiondelete->getMessage()
+            ], 500);
         }
     }
 
@@ -165,25 +170,33 @@ class TipoEstadoAtencionController extends Controller
 
         $validated = Validator::make($request->all(), [
             'id' => 'required|integer',
-           ]);
+        ]);
 
-          if($validated->fails()){
-              return response()->json($validated->errors(),403);
-          }
-
-        try{
-            $tipoEstadoAtencion = TipoEstadoAtencion::find($request->id);
-            $tipoEstadoAtencion->delete();
-            return response()->json(
-                [
-                    'message'=> 'Tipo delete Succeccfully'
-                ],200 );
-
-
-        } catch(\Exception $exceptiondelete){
+        if ($validated->fails()) {
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),
-                ],403);
+                'error' => 'Error de validación',
+                'messages' => $validated->errors()
+            ], 403);
+        }
+
+        try {
+            $tipoEstadoAtencion = TipoEstadoAtencion::findOrFail($request->id);
+            $tipoEstadoAtencion->delete();
+
+            return response()->json([
+                'message' => 'Tipo de estado de atención eliminado con éxito'
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'El tipo de estado de atención con el ID proporcionado no existe'
+            ], 404);
+
+        } catch (\Exception $exceptiondelete) {
+            return response()->json([
+                'error' => 'Error al eliminar el tipo de estado de atención',
+                'message' => $exceptiondelete->getMessage()
+            ], 500);
         }
     }
 

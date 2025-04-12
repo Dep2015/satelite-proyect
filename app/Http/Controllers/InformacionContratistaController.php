@@ -119,12 +119,17 @@ class InformacionContratistaController extends Controller
         $contratista->delete();
 
         return response()->json([
-            'message' => 'Pago eliminado con éxito'
+            'message' => 'Contratista eliminado con éxito'
         ], 200);
+
+    } catch (ModelNotFoundException $e) {
+        return response()->json([
+            'error' => 'El contratista con el ID proporcionado no existe'
+        ], 404);
 
     } catch (\Exception $exceptiondelete) {
         return response()->json([
-            'error' => 'Error al eliminar el pago',
+            'error' => 'Error al eliminar el contratista',
             'message' => $exceptiondelete->getMessage()
         ], 500);
     }

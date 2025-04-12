@@ -13,13 +13,13 @@ class TipodeAtencionController extends Controller
             'name' => 'required|string|max:255',
             'id_empresa' => 'required|integer',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
 
            try {
-            
+
             $TipodeAtencion = new TipodeAtencion();
             $TipodeAtencion->name = $request->name;
             $TipodeAtencion->id_empresa = $request->id_empresa;
@@ -34,7 +34,7 @@ class TipodeAtencionController extends Controller
 
            } catch (\Exception $exception) {
             return response()->json([
-                'error'=> $exception->getMessage(),  
+                'error'=> $exception->getMessage(),
                 ],403);
            }
     }
@@ -45,7 +45,7 @@ class TipodeAtencionController extends Controller
             'name' => 'required|string|max:255',
             'id' => 'required|integer',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
@@ -67,7 +67,7 @@ class TipodeAtencionController extends Controller
 
         } catch (\Exception $exceptionedit) {
             return response()->json([
-                'error'=> $exceptionedit->getMessage(),  
+                'error'=> $exceptionedit->getMessage(),
                 ],403);
         }
     }
@@ -77,7 +77,7 @@ class TipodeAtencionController extends Controller
         $validated = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
@@ -99,18 +99,18 @@ class TipodeAtencionController extends Controller
 
         } catch (\Exception $exceptionedit) {
             return response()->json([
-                'error'=> $exceptionedit->getMessage(),  
+                'error'=> $exceptionedit->getMessage(),
                 ],403);
         }
     }
 
 
     public function allTipodeAtencion(Request $request){
-    
+
         $validated = Validator::make($request->all(), [
              'id_empresa' => 'required|integer',
             ]);
-           
+
            if($validated->fails()){
                return response()->json($validated->errors(),403);
            }
@@ -127,29 +127,34 @@ class TipodeAtencionController extends Controller
 
            }catch(\Exception $exceptionall){
             return response()->json([
-                'error'=> $exceptionall->getMessage(),  
+                'error'=> $exceptionall->getMessage(),
                 ],403);
            }
-    
+
     }
 
 
-    
+
     public function deleteTipodeAtencion(Request $request, $id_campo){
 
-        try{
-            $TipodeAtencion = TipodeAtencion::find($id_campo);
-            $TipodeAtencion->delete();
-            return response()->json(
-                [
-                    'message'=> 'Tipo delete Succeccfully'
-                ],200 );
+        try {
+            $tipo = TipodeAtencion::findOrFail($id_campo);
+            $tipo->delete();
 
-
-        } catch(\Exception $exceptiondelete){
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),  
-                ],403);
+                'message' => 'Tipo de atención eliminado con éxito'
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'El tipo de atención con el ID proporcionado no existe'
+            ], 404);
+
+        } catch (\Exception $exceptiondelete) {
+            return response()->json([
+                'error' => 'Error al eliminar el tipo de atención',
+                'message' => $exceptiondelete->getMessage()
+            ], 500);
         }
     }
 
@@ -159,25 +164,33 @@ class TipodeAtencionController extends Controller
 
         $validated = Validator::make($request->all(), [
             'id' => 'required|integer',
-            ]);
-           
-           if($validated->fails()){
-               return response()->json($validated->errors(),403);
-           }
+        ]);
 
-        try{
-            $TipodeAtencion = TipodeAtencion::find($request->id);
-            $TipodeAtencion->delete();
-            return response()->json(
-                [
-                    'message'=> 'Tipo delete Succeccfully'
-                ],200 );
-
-
-        } catch(\Exception $exceptiondelete){
+        if ($validated->fails()) {
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),  
-                ],403);
+                'error' => 'Error de validación',
+                'messages' => $validated->errors()
+            ], 403);
+        }
+
+        try {
+            $tipo = TipodeAtencion::findOrFail($request->id);
+            $tipo->delete();
+
+            return response()->json([
+                'message' => 'Tipo de atención eliminado con éxito'
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'El tipo de atención con el ID proporcionado no existe'
+            ], 404);
+
+        } catch (\Exception $exceptiondelete) {
+            return response()->json([
+                'error' => 'Error al eliminar el tipo de atención',
+                'message' => $exceptiondelete->getMessage()
+            ], 500);
         }
     }
 }

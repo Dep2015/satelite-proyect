@@ -232,16 +232,21 @@ class ActividadesEjecucionController extends Controller
         }
 
         try {
-            $actividads = ActividadesEjecucion::findOrFail($request->id);
-            $actividads->delete();
+            $actividad = ActividadesEjecucion::findOrFail($request->id);
+            $actividad->delete();
 
             return response()->json([
                 'message' => 'Actividad eliminada con éxito'
             ], 200);
 
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'La actividad con el ID proporcionado no existe'
+            ], 404);
+
         } catch (\Exception $exceptiondelete) {
             return response()->json([
-                'error' => 'Error al eliminar la Actividad',
+                'error' => 'Error al eliminar la actividad',
                 'message' => $exceptiondelete->getMessage()
             ], 500);
         }

@@ -142,47 +142,58 @@ class EstadoRembolsoController extends Controller
     }
 
     public function deleteEstadoRembolso(Request $request, $id_tipo){
-
-        try{
-            $tipoEstadoRembolso = EstadoRembolso::find($id_tipo);
+        try {
+            $tipoEstadoRembolso = EstadoRembolso::findOrFail($id_tipo);
             $tipoEstadoRembolso->delete();
-            return response()->json(
-                [
-                    'message'=> 'Tipo delete Succeccfully'
-                ],200 );
 
-
-        } catch(\Exception $exceptiondelete){
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),
-                ],403);
+                'message' => 'Estado de reembolso eliminado con éxito'
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'El estado de reembolso con el ID proporcionado no existe'
+            ], 404);
+
+        } catch (\Exception $exceptiondelete) {
+            return response()->json([
+                'error' => 'Error al eliminar el estado de reembolso',
+                'message' => $exceptiondelete->getMessage()
+            ], 500);
         }
     }
 
 
     public function deleteEstadoRembolso2(Request $request){
-
         $validated = Validator::make($request->all(), [
             'id' => 'required|integer',
-           ]);
+        ]);
 
-          if($validated->fails()){
-              return response()->json($validated->errors(),403);
-          }
-
-        try{
-            $tipoEstadoRembolso = EstadoRembolso::find($request->id);
-            $tipoEstadoRembolso->delete();
-            return response()->json(
-                [
-                    'message'=> 'Tipo delete Succeccfully'
-                ],200 );
-
-
-        } catch(\Exception $exceptiondelete){
+        if ($validated->fails()) {
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),
-                ],403);
+                'error' => 'Error de validación',
+                'messages' => $validated->errors()
+            ], 403);
+        }
+
+        try {
+            $estado = EstadoRembolso::findOrFail($request->id);
+            $estado->delete();
+
+            return response()->json([
+                'message' => 'Estado de reembolso eliminado con éxito'
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'El estado de reembolso con el ID proporcionado no existe'
+            ], 404);
+
+        } catch (\Exception $exceptiondelete) {
+            return response()->json([
+                'error' => 'Error al eliminar el estado de reembolso',
+                'message' => $exceptiondelete->getMessage()
+            ], 500);
         }
     }
 }

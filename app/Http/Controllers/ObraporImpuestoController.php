@@ -359,15 +359,23 @@ public function addObraporImpuestov2(Request $request)
     }
 
     try {
-
-        ActividadesEjecucion::where('id_obra_impuesto', $request->id)->delete();
-
+        // Verifica que exista la obra antes de eliminar actividades relacionadas
         $obra = ObraporImpuesto::findOrFail($request->id);
+
+        // Eliminar actividades relacionadas a la obra
+        ActividadesEjecucion::where('id_obra_impuesto', $obra->id)->delete();
+
+        // Eliminar la obra
         $obra->delete();
 
         return response()->json([
-            'message' => 'Obra eliminada con éxito'
+            'message' => 'Obra y actividades eliminadas con éxito'
         ], 200);
+
+    } catch (ModelNotFoundException $e) {
+        return response()->json([
+            'error' => 'La obra con el ID proporcionado no existe'
+        ], 404);
 
     } catch (\Exception $exceptiondelete) {
         return response()->json([

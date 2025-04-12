@@ -146,47 +146,58 @@ class AtencionEstadoController extends Controller
 
 
     public function deleteAtencionEstados(Request $request, $id_tipo){
+        try {
+            $estado = AtencionEstados::findOrFail($id_tipo);
+            $estado->delete();
 
-        try{
-            $EstadoAtencion = AtencionEstados::find($id_tipo);
-            $EstadoAtencion->delete();
-            return response()->json(
-                [
-                    'message'=> 'Estado delete Succeccfully'
-                ],200 );
-
-
-        } catch(\Exception $exceptiondelete){
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),
-                ],403);
+                'message' => 'Estado eliminado con éxito'
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'El estado con el ID proporcionado no existe'
+            ], 404);
+
+        } catch (\Exception $exceptiondelete) {
+            return response()->json([
+                'error' => 'Error al eliminar el estado',
+                'message' => $exceptiondelete->getMessage()
+            ], 500);
         }
     }
 
 
     public function deleteAtencionEstados2(Request $request){
-
         $validated = Validator::make($request->all(), [
             'id' => 'required|integer',
-           ]);
+        ]);
 
-          if($validated->fails()){
-              return response()->json($validated->errors(),403);
-          }
-
-        try{
-            $EstadoAtencion = AtencionEstados::find($request->id);
-            $EstadoAtencion->delete();
-            return response()->json(
-                [
-                    'message'=> 'Estado delete Succeccfully'
-                ],200 );
-
-
-        } catch(\Exception $exceptiondelete){
+        if ($validated->fails()) {
             return response()->json([
-                'error'=> $exceptiondelete->getMessage(),
-                ],403);
+                'error' => 'Error de validación',
+                'messages' => $validated->errors()
+            ], 403);
+        }
+
+        try {
+            $estado = AtencionEstados::findOrFail($request->id);
+            $estado->delete();
+
+            return response()->json([
+                'message' => 'Estado eliminado con éxito'
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'El estado con el ID proporcionado no existe'
+            ], 404);
+
+        } catch (\Exception $exceptiondelete) {
+            return response()->json([
+                'error' => 'Error al eliminar el estado',
+                'message' => $exceptiondelete->getMessage()
+            ], 500);
         }
     }
 }

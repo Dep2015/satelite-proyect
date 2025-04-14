@@ -13,6 +13,7 @@ class PagosOIController extends Controller
         $validated = Validator::make($request->all(), [
 
             'id_tipo_gasto' => 'required|exists:tipo_gastos,id',
+            'id_obra_impuesto' => 'required|integer',
             'id_estado_rembolso' => 'required|exists:estado_rembolsos,id',
             'monto_pagado' => 'required|numeric|min:0',
             'fecha' => 'required|date',
@@ -37,6 +38,7 @@ class PagosOIController extends Controller
 
             $pagos = new PagosOI();
             $pagos->id_tipo_gasto = $request->id_tipo_gasto;
+            $pagos->id_obra_impuesto = $request->id_obra_impuesto;
             $pagos->id_estado_rembolso = $request->id_estado_rembolso;
             $pagos->monto_pagado = $request->monto_pagado;
             $pagos->fecha = $request->fecha;
@@ -196,6 +198,7 @@ public function allPagosOI(Request $request)
     // Validar la entrada
     $validated = Validator::make($request->all(), [
         'id_empresa' => 'required|integer',
+        'id_obra_impuesto'=> 'required|integer',
     ]);
 
     if ($validated->fails()) {
@@ -207,7 +210,7 @@ public function allPagosOI(Request $request)
 
     try {
         // Obtener los pagos de la empresa especificada con relaciones si las hay
-        $itemsPagosOI = PagosOI::where('id_empresa', $request->id_empresa)->with(['tipoGasto:id,name', 'estadoReembolso:id,name'])->get();
+        $itemsPagosOI = PagosOI::where('id_empresa', $request->id_empresa)->where('id_obra_impuesto', $request->id_obra_impuesto)->with(['tipoGasto:id,name', 'estadoReembolso:id,name'])->get();
 
         return response()->json([
             'success' => true,

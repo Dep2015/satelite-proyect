@@ -13,6 +13,7 @@ class InformacionFinancista extends Model
     'comentarios',
     'id_categoria_documento',
     'responsables',
+    'id_obra_impuesto',
     'id_empresa',
     ];
 

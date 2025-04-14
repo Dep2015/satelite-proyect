@@ -16,6 +16,7 @@ class PagosOI extends Model
             'id_estado_rembolso',
             'responsables',
             'concepto',
+            'id_obra_impuesto',
             'id_empresa',
 
         ];

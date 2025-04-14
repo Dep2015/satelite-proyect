@@ -13,6 +13,7 @@ class InformacionFinancistaController extends Controller
         $validated = Validator::make($request->all(), [
 
             'id_tipo_financista' => 'required|exists:tipo_financistas,id',
+            'id_obra_impuesto'=> 'required|integer',
             'aspecto' => 'required|string|max:255',
             'comentarios' => 'required|string',
             'id_categoria_documento' => 'required|nullable|array',
@@ -32,6 +33,7 @@ class InformacionFinancistaController extends Controller
 
             $financista = new InformacionFinancista();
             $financista->id_tipo_financista = $request->id_tipo_financista;
+            $financista->id_obra_impuesto = $request->id_obra_impuesto;
             $financista->aspecto = $request->aspecto;
             $financista->comentarios = $request->comentarios;
             $financista->id_categoria_documento = $request->id_categoria_documento;
@@ -141,6 +143,7 @@ public function allInformacionFinancista(Request $request)
     // Validar la entrada
     $validated = Validator::make($request->all(), [
         'id_empresa' => 'required|integer',
+        'id_obra_impuesto'=> 'required|integer',
     ]);
 
     if ($validated->fails()) {
@@ -152,7 +155,7 @@ public function allInformacionFinancista(Request $request)
 
     try {
         // Obtener los pagos de la empresa especificada con relaciones si las hay
-        $itemsPagosOI = InformacionFinancista::where('id_empresa', $request->id_empresa)->with(['tipoFinancista:id,name'])->get();
+        $itemsPagosOI = InformacionFinancista::where('id_empresa', $request->id_empresa)->where('id_obra_impuesto', $request->id_obra_impuesto)->with(['tipoFinancista:id,name'])->get();
 
         return response()->json([
             'success' => true,

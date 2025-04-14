@@ -13,6 +13,7 @@ class InformacionContratistaController extends Controller
         $validated = Validator::make($request->all(), [
 
             'id_tipo_contratista' => 'required|exists:tipo_contratistas,id',
+            'id_obra_impuesto' => 'required|integer',
             'aspecto' => 'required|string|max:255',
             'comentarios' => 'required|string',
             'id_categoria_documento' => 'required|nullable|array',
@@ -32,6 +33,7 @@ class InformacionContratistaController extends Controller
 
             $contratista = new InformacionContratista();
             $contratista->id_tipo_contratista = $request->id_tipo_contratista;
+            $contratista->id_obra_impuesto = $request->id_obra_impuesto;
             $contratista->aspecto = $request->aspecto;
             $contratista->comentarios = $request->comentarios;
             $contratista->id_categoria_documento = $request->id_categoria_documento;
@@ -141,6 +143,7 @@ public function allInformacionContratista(Request $request)
     // Validar la entrada
     $validated = Validator::make($request->all(), [
         'id_empresa' => 'required|integer',
+        'id_obra_impuesto' => 'required|integer',
     ]);
 
     if ($validated->fails()) {
@@ -152,7 +155,7 @@ public function allInformacionContratista(Request $request)
 
     try {
         // Obtener los pagos de la empresa especificada con relaciones si las hay
-        $itemsPagosOI = InformacionContratista::where('id_empresa', $request->id_empresa)->with(['tipocontratista:id,name'])->get();
+        $itemsPagosOI = InformacionContratista::where('id_empresa', $request->id_empresa)->where('id_obra_impuesto', $request->id_obra_impuesto)->with(['tipocontratista:id,name'])->get();
 
         return response()->json([
             'success' => true,

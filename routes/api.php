@@ -305,6 +305,7 @@ Route::get('/archivos/all', [Archivos3Controller::class, 'listarArchvio2']);
 
 Route::delete('/archivosdelete/{id}', [Archivos3Controller::class, 'eliminar']);
 
+Route::post('/archivosdeletetodos', [Archivos3Controller::class, 'eliminarTodos']);
 
 
  // Subirt archivos S3 V22

@@ -234,4 +234,40 @@ class Archivos3Controller extends Controller
 
         return response()->json(['mensaje' => 'Archivo eliminado correctamente.']);
     }
+
+    public function eliminarTodos(Request $request)
+{
+    // Opcional: Validación simple para evitar borrado accidental
+    $request->validate([
+        'confirmar' => 'required|boolean|in:1',
+    ]);
+
+    try {
+        // Obtener todos los archivos registrados
+        $archivos = Archivos3::all();
+
+        foreach ($archivos as $archivo) {
+            // Eliminar el archivo de S3 si existe path
+            if (!empty($archivo->path)) {
+                $this->s3->deleteObject([
+                    'Bucket' => $this->bucket,
+                    'Key'    => $archivo->path,
+                ]);
+            }
+
+            // Eliminar el registro en base de datos
+            $archivo->delete();
+        }
+
+        return response()->json([
+            'mensaje' => 'Todos los archivos y sus registros han sido eliminados correctamente.'
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Error al eliminar archivos',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
 }

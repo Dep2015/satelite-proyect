@@ -38,4 +38,16 @@ class AtencionEstados extends Model
     public function atencion_estado() {
         return $this->hasMany(ActividadesEjecucion::class,'atencion_estado_id');
     }
+
+    public function actividades(): HasMany
+    {
+        return $this->hasMany(ActividadEstadoAtencion::class, 'id_estado_atencion');
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($estado) {
+            $estado->actividades()->delete();
+        });
+    }
 }

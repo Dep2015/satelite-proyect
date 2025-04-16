@@ -6,6 +6,9 @@ use Illuminate\Support\Carbon;
 use App\Models\ObraporImpuesto;
 use App\Models\ActividadesEjecucion;
 use App\Models\ActividadEstadoAtencion;
+use App\Models\InformacionFinancista;
+use App\Models\InformacionContratista;
+use App\Models\PagosOI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -352,6 +355,19 @@ public function addObraporImpuestov3(Request $request)
 
         // Eliminar actividades relacionadas a la obra
         ActividadesEjecucion::where('id_obra_impuesto', $obra->id)->delete();
+
+        //Eliminar financista
+
+        InformacionFinancistaArr::where('id_obra_impuesto', $obra->id)->delete();
+
+        //Eliminar Contratista
+        InformacionContratista::where('id_obra_impuesto', $obra->id)->delete();
+
+        //Eliminar Pago
+
+        PagosOI::where('id_obra_impuesto', $obra->id)->delete();
+
+
 
         // Eliminar la obra
         $obra->delete();

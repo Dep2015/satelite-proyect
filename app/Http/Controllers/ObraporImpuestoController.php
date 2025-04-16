@@ -358,13 +358,12 @@ public function addObraporImpuestov3(Request $request)
 
         //Eliminar financista
 
-        InformacionFinancistaArr::where('id_obra_impuesto', $obra->id)->delete();
+        InformacionFinancista::where('id_obra_impuesto', $obra->id)->delete();
 
         //Eliminar Contratista
         InformacionContratista::where('id_obra_impuesto', $obra->id)->delete();
 
         //Eliminar Pago
-
         PagosOI::where('id_obra_impuesto', $obra->id)->delete();
 
 

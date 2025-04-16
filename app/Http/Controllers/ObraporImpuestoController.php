@@ -8,6 +8,7 @@ use App\Models\ActividadesEjecucion;
 use App\Models\ActividadEstadoAtencion;
 use App\Models\InformacionFinancista;
 use App\Models\InformacionContratista;
+use App\Models\Archivos3;
 use App\Models\PagosOI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -363,7 +364,34 @@ public function addObraporImpuestov3(Request $request)
         //Eliminar Contratista
         InformacionContratista::where('id_obra_impuesto', $obra->id)->delete();
 
+
+
         //Eliminar Pago
+
+        $pagos = PagosOI::where('id_obra_impuesto', $obra->id)->get();
+
+        foreach ($pagos as $pago) {
+
+        $archivos = Archivos3::where('codigo_registro', (string)$pago->id)->get();
+        foreach ($archivos as $archivo) {
+            try {
+                // Eliminar archivo del S3
+                $this->s3->deleteObject([
+                    'Bucket' => $this->bucket,
+                    'Key'    => $archivo->path,
+                ]);
+
+                // Eliminar el registro de la BD
+                $archivo->delete();
+
+            } catch (\Exception $e) {
+                return response()->json([
+                    'error' => 'Error al eliminar archivo de pagos de la Obra ',
+                    'message' => $exceptiondelete->getMessage()
+                ], 500);
+            }
+        }
+    }
         PagosOI::where('id_obra_impuesto', $obra->id)->delete();
 
 

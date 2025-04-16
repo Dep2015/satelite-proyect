@@ -53,10 +53,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
   //apis Tipo delete 2
 
-
-
-
   Route::post('/delete/tipoestadoatencion', [TipoEstadoAtencionController::class, 'deleteTipoEstadoAtencion2']);
+
+
+
+
 
 
   //apis campo obligatorio create
@@ -80,6 +81,9 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/delete/campoobligatorioobraImpuestos', [CampoObligatorioObraImpuestosController::class, 'deleteCampoObligatorioObraImpuestos2']);
 
 
+
+
+
   //apis Tipo de Atencion create
   Route::post('/add/tipodeatencion', [TipodeAtencionController::class, 'addTipodeAtencion']);
 
@@ -99,6 +103,9 @@ Route::middleware('auth:sanctum')->group(function () {
   //apis Tipo de Atencion delete 2
 
   Route::post('/delete/tipodeatencion', [TipodeAtencionController::class, 'deleteTipodeAtencion2']);
+
+
+
 
 
 
@@ -125,6 +132,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
+
+
   //apis estado atencion create
   Route::post('/add/atencionestados', [AtencionEstadoController::class, 'addAtencionEstados']);
 
@@ -145,6 +154,9 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/delete/estadodeatencions', [AtencionEstadoController::class, 'deleteAtencionEstados2']);
 
 
+
+
+
   // Obra Impuesto
 
   Route::post('/add/obraporimpuesto', [ObraporImpuestoController::class, 'addObraporImpuesto']);
@@ -158,11 +170,17 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/delete/obraporimpuesto', [ObraporImpuestoController::class, 'deleteObraporImpuesto']);
 
 
+
+
+
   // Vista Previa - ajustes
 
   Route::get('/all/pestavista', [PestaVistaController::class, 'allPestaVista']);
   Route::post('/add/pestavista', [PestaVistaController::class, 'addPestaVista']);
   Route::post('/edit/pestavista', [PestaVistaController::class, 'editPestaVista']);
+
+
+
 
 
   // Tipo de gasto
@@ -179,6 +197,9 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/delete/tipogasto/{id_campo}', [TipoGastoController::class, 'deleteTipoGasto']);
 
   Route::post('/delete/tipogasto', [TipoGastoController::class, 'deleteTipoGasto2']);
+
+
+
 
 
   // Tipo de financista
@@ -198,6 +219,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
+
+
     // Tipo de Contratista
 
 
@@ -212,6 +235,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/delete/tipocontratista/{id_campo}', [TipoContratistaController::class, 'deleteTipoContratista']);
 
     Route::post('/delete/tipocontratista', [TipoContratistaController::class, 'deleteTipoContratista2']);
+
+
 
 
         // Estado Rembolso
@@ -232,7 +257,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
-      // Pago OI
+      // Pago OI - Sprint 01
 
   Route::post('/add/pagosoi', [PagosOIController::class, 'addPagosOI']);
 
@@ -243,6 +268,8 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/delete/pagosoi', [PagosOIController::class, 'deletePagosOI']);
 
 
+        // Pago OI - Sprint 01 - corregido
+
   Route::post('/add/pagosois', [PagosOIController::class, 'addPagosOI']);
 
   Route::get('/all/pagosois', [PagosOIController::class, 'allPagosOI']);
@@ -252,6 +279,11 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/delete/pagosois', [PagosOIController::class, 'deletePagosOI']);
 
   Route::post('/edit/pagosoiestado', [PagosOIController::class, 'editPagosOIEstado']);
+
+
+
+
+
 
 
         // Informacion Financista
@@ -267,6 +299,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
+
           // Informacion Contratista
 
   Route::post('/add/informacioncontratista', [InformacionContratistaController::class, 'addInformacionContratista']);
@@ -276,6 +309,8 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/edit/informacioncontratista', [InformacionContratistaController::class, 'editInformacionContratista']);
 
   Route::post('/delete/informacioncontratista', [InformacionContratistaController::class, 'deleteInformacionContratista']);
+
+
 
 
 
@@ -295,22 +330,17 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::post('/delete/etapaejecucion', [ActividadesEjecucionController::class, 'deleteActividadesEjecucion']);
 
 
+
+
+
  // Subirt archivos S3
 
-Route::post('/archivospago/subir', [Archivos3Controller::class, 'subirPago']);
+
 
 Route::post('/archivos/subir', [Archivos3Controller::class, 'subirArchivo']);
 
 Route::get('/archivos/all', [Archivos3Controller::class, 'listarArchvio2']);
 
 Route::delete('/archivosdelete/{id}', [Archivos3Controller::class, 'eliminar']);
-
-Route::post('/archivosdeletetodos', [Archivos3Controller::class, 'eliminarTodos']);
-
-
- // Subirt archivos S3 V22
-
-
- Route::post('/archivos3/subir', [ArchivoS32Controller::class, 'subirArchivo']);
 
 });

@@ -370,9 +370,20 @@ public function addObraporImpuestov3(Request $request)
 
         $pagos = PagosOI::where('id_obra_impuesto', $obra->id)->get();
 
+        if ($pagos->isEmpty()) {
+            return response()->json([
+                'message' => 'Sin Pagos',
+            ]);
+        }
+
         foreach ($pagos as $pago) {
 
         $archivos = Archivos3::where('codigo_registro', (string)$pago->id)->get();
+
+        if ($archivos->isEmpty()) {
+            continue; // No hay archivos para este pago
+        }
+
         foreach ($archivos as $archivo) {
             try {
                 // Eliminar archivo del S3

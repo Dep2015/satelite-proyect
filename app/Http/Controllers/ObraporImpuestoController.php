@@ -367,42 +367,6 @@ public function addObraporImpuestov3(Request $request)
 
 
         //Eliminar Pago
-
-        $pagos = PagosOI::where('id_obra_impuesto', $obra->id)->get();
-
-        if ($pagos->isEmpty()) {
-            return response()->json([
-                'message' => 'Sin Pagos',
-            ]);
-        }
-
-        foreach ($pagos as $pago) {
-
-        $archivos = Archivos3::where('codigo_registro', (string)$pago->id)->get();
-
-        if ($archivos->isEmpty()) {
-            continue; // No hay archivos para este pago
-        }
-
-        foreach ($archivos as $archivo) {
-            try {
-                // Eliminar archivo del S3
-                $this->s3->deleteObject([
-                    'Bucket' => $this->bucket,
-                    'Key'    => $archivo->path,
-                ]);
-
-                // Eliminar el registro de la BD
-                $archivo->delete();
-
-            } catch (\Exception $e) {
-                return response()->json([
-                    'error' => 'Error al eliminar archivo de pagos de la Obra ',
-                    'message' => $exceptiondelete->getMessage()
-                ], 500);
-            }
-        }
-    }
         PagosOI::where('id_obra_impuesto', $obra->id)->delete();
 
 

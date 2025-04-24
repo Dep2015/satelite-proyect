@@ -288,9 +288,9 @@ public function addObraporImpuestov3(Request $request)
             'costo_proyecto' => $request->costo_proyecto,
             'fecha_conclusion' => $request->fecha_conclusion,
             'fecha_reembolso' => $request->fecha_reembolso,
-            'responsable' => json_encode($request->responsable), // Guardar como JSON
-            'unidades_gestion' => json_encode($request->unidades_gestion),
-            'centros_operacion' => json_encode($request->centros_operacion),
+            'responsable' => $request->responsable, // Guardar como JSON
+            'unidades_gestion' => $request->unidades_gestion,
+            'centros_operacion' => $request->centros_operacion,
         ]);
 
         return response()->json([
@@ -301,6 +301,49 @@ public function addObraporImpuestov3(Request $request)
     } catch (\Exception $exception) {
         return response()->json([
             'error' => 'Error al actualizar la obra',
+            'message' => $exception->getMessage()
+        ], 500);
+    }
+}
+
+
+public function editObraporImpuestoEstado(Request $request)
+{
+    // Validar los datos recibidos
+    $validated = Validator::make($request->all(), [
+        'id' => 'required|exists:obrapor_impuestos,id', // Validar que la obra exista
+        'tipo_id' => 'required|exists:tipo_estado_atencions,id',
+
+
+    ]);
+
+    // Si la validación falla, devolver error
+    if ($validated->fails()) {
+        return response()->json([
+            'error' => 'Error de validación',
+            'messages' => $validated->errors()
+        ], 403);
+    }
+
+    try {
+        // Buscar la obra en la base de datos
+        $obra = ObraporImpuesto::findOrFail($request->id);
+
+        // Actualizar los datos
+        $obra->update([
+
+            'tipo_id' => $request->tipo_id,
+
+        ]);
+
+        return response()->json([
+            'message' => 'Estado de Obra actualizada con éxito',
+            'obra' => $obra
+        ], 200);
+
+    } catch (\Exception $exception) {
+        return response()->json([
+            'error' => 'Error al actualizar el estado de la obra',
             'message' => $exception->getMessage()
         ], 500);
     }

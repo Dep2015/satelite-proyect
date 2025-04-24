@@ -81,8 +81,8 @@ class InformacionContratistaController extends Controller
                 'id_tipo_contratista' => $request->id_tipo_contratista,
                 'aspecto' => $request->aspecto,
                 'comentarios' => $request->comentarios,
-                'id_categoria_documento' => json_encode($request->id_categoria_documento),
-                'responsables' => json_encode($request->responsables),
+                'id_categoria_documento' => $request->id_categoria_documento,
+                'responsables' => $request->responsables,
             ]);
 
             return response()->json(

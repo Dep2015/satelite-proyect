@@ -168,6 +168,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
   Route::post('/delete/obraporimpuesto', [ObraporImpuestoController::class, 'deleteObraporImpuesto']);
 
+  Route::post('/edit/obraporimpuestoestado', [ObraporImpuestoController::class, 'editObraporImpuestoEstado']);
+
 
 
 
@@ -328,6 +330,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
   Route::post('/delete/etapaejecucion', [ActividadesEjecucionController::class, 'deleteActividadesEjecucion']);
 
+  Route::get('/all/actividadesejecucionnombre', [ActividadesEjecucionController::class, 'allActividadesEjecucionNombre']);
 
 
 

@@ -96,9 +96,9 @@ class PagosOIController extends Controller
                 'monto_pagado' => $request->monto_pagado,
                 'fecha' => $request->fecha,
                 'concepto' => $request->concepto,
-                'beneficiario' => json_encode($request->beneficiario),
-                'grupo_interes' => json_encode($request->grupo_interes),
-                'responsables' => json_encode($request->responsables),
+                'beneficiario' => $request->beneficiario,
+                'grupo_interes' => $request->grupo_interes,
+                'responsables' => $request->responsables,
             ]);
 
             return response()->json(

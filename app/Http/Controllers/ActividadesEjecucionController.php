@@ -116,6 +116,34 @@ class ActividadesEjecucionController extends Controller
 
     }
 
+
+    public function allActividadesEjecucionNombre(Request $request)
+    {
+        $validated = Validator::make($request->all(), [
+            'id_empresa' => 'required|integer',
+        ]);
+
+        if ($validated->fails()) {
+            return response()->json($validated->errors(), 403);
+        }
+
+        try {
+            $actividades = ActividadesEjecucion::where('id_empresa', $request->id_empresa)
+                ->select('id', 'name')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $actividades,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function editActividadesEjecucion(Request $request)
     {
         // Validar los datos recibidos
@@ -156,7 +184,7 @@ class ActividadesEjecucionController extends Controller
                 'comentarios' => $request->comentarios,
                 'atencion_estado_id' => $request->atencion_estado_id,
                 'tipo_estado_ejecucion_id' => $request->tipo_estado_ejecucion_id,
-                'responsables' => json_encode($request->responsables), // Guardar como JSON
+                'responsables' => $request->responsables, // Guardar como JSON
             ]);
 
             return response()->json([

@@ -307,26 +307,7 @@ class AtencionEstadoController extends Controller
             ], 403);
         }
 
-      /***   try {
-            $estado = AtencionEstados::findOrFail($request->id);
-            $estado->delete();
 
-            return response()->json([
-                'message' => 'Estado eliminado con éxito'
-            ], 200);
-
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => 'El estado con el ID proporcionado no existe'
-            ], 404);
-
-        } catch (\Exception $exceptiondelete) {
-            return response()->json([
-                'error' => 'Error al eliminar el estado',
-                'message' => $exceptiondelete->getMessage()
-            ], 500);
-        }
-            **/
 
             try{
 

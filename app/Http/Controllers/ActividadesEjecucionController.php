@@ -69,7 +69,7 @@ class ActividadesEjecucionController extends Controller
 
            try{
 
-            $itemsEstadoAtencion = ActividadesEjecucion::where('id_empresa', $request->id_empresa)->with(['atencion_estado:id,name'])->get();
+            $itemsEstadoAtencion = ActividadesEjecucion::where('id_empresa', $request->id_empresa)->where('estado', 1)->with(['atencion_estado:id,name'])->get();
 
             return response()->json(
                 [
@@ -99,7 +99,7 @@ class ActividadesEjecucionController extends Controller
 
            try{
 
-            $itemsEstadoAtencion = ActividadesEjecucion::where('id_empresa', $request->id_empresa)->where('atencion_estado_id', $request->atencion_estado_id)->where('id_obra_impuesto', $request->id_obra_impuesto)->with(['atencion_estado:id,name',
+            $itemsEstadoAtencion = ActividadesEjecucion::where('id_empresa', $request->id_empresa)->where('atencion_estado_id', $request->atencion_estado_id)->where('id_obra_impuesto', $request->id_obra_impuesto)->where('estado', 1)->with(['atencion_estado:id,name',
             'tipo_estado_etapa_ejecucion:id,name'])->get();
 
             return response()->json(
@@ -260,22 +260,23 @@ class ActividadesEjecucionController extends Controller
         }
 
         try {
+            // Buscar la obra en la base de datos
             $actividad = ActividadesEjecucion::findOrFail($request->id);
-            $actividad->delete();
+
+            // Actualizar los datos
+            $actividad->update([
+                'estado' => 0,
+            ]);
 
             return response()->json([
-                'message' => 'Actividad eliminada con éxito'
+                'message' => 'Actividad delete con éxito',
+                'obra' => $actividad
             ], 200);
 
-        } catch (ModelNotFoundException $e) {
+        } catch (\Exception $exception) {
             return response()->json([
-                'error' => 'La actividad con el ID proporcionado no existe'
-            ], 404);
-
-        } catch (\Exception $exceptiondelete) {
-            return response()->json([
-                'error' => 'Error al eliminar la actividad',
-                'message' => $exceptiondelete->getMessage()
+                'error' => 'Error al delete la obra',
+                'message' => $exception->getMessage()
             ], 500);
         }
     }

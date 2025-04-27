@@ -171,25 +171,6 @@ class PagosOIController extends Controller
         ], 403);
     }
 
-   /*** try {
-        $pagosOI = PagosOI::findOrFail($request->id);
-        $pagosOI->delete();
-
-        return response()->json([
-            'message' => 'Pago eliminado con éxito'
-        ], 200);
-
-    } catch (ModelNotFoundException $e) {
-        return response()->json([
-            'error' => 'El ID proporcionado no existe en la tabla'
-        ], 404);
-
-    } catch (\Exception $exceptiondelete) {
-        return response()->json([
-            'error' => 'Error al eliminar el pago',
-            'message' => $exceptiondelete->getMessage()
-        ], 500);
-    } **/
 
     try{
 

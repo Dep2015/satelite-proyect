@@ -15,6 +15,7 @@ class InformacionContratista extends Model
         'responsables',
         'id_obra_impuesto',
         'id_empresa',
+        'estado',
         ];
 
         protected $casts = [

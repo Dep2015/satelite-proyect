@@ -116,7 +116,8 @@ class InformacionContratistaController extends Controller
         ], 403);
     }
 
-    try {
+   /***
+    *  try {
         $contratista = InformacionContratista::findOrFail($request->id);
         $contratista->delete();
 
@@ -135,6 +136,32 @@ class InformacionContratistaController extends Controller
             'message' => $exceptiondelete->getMessage()
         ], 500);
     }
+    **/
+
+
+    try{
+
+        $tipocontratista_data = InformacionContratista::find($request->id);
+
+
+       $updatecontratista = $tipocontratista_data->update([
+            'estado' => 0,
+
+        ]);
+
+        return response()->json(
+            [
+                'message'=> 'Tipo delete Succeccfully',
+
+            ],200 );
+
+       }catch(\Exception $exception){
+
+        return response()->json([
+            'error'=> $exception->getMessage(),
+            ],403);
+
+       }
 }
 
 
@@ -155,7 +182,7 @@ public function allInformacionContratista(Request $request)
 
     try {
         // Obtener los pagos de la empresa especificada con relaciones si las hay
-        $itemsPagosOI = InformacionContratista::where('id_empresa', $request->id_empresa)->where('id_obra_impuesto', $request->id_obra_impuesto)->with(['tipocontratista:id,name'])->get();
+        $itemsPagosOI = InformacionContratista::where('id_empresa', $request->id_empresa)->where('id_obra_impuesto', $request->id_obra_impuesto)->where('estado',1)->with(['tipocontratista:id,name'])->get();
 
         return response()->json([
             'success' => true,

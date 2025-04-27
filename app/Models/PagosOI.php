@@ -18,6 +18,7 @@ class PagosOI extends Model
             'concepto',
             'id_obra_impuesto',
             'id_empresa',
+            'estado',
 
         ];
 

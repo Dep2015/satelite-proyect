@@ -16,7 +16,7 @@ class AtencionEstados extends Model
         'accion_id',
         'tipo_id',
         'actividades',
-        'id',
+        'estado',
     ];
 
     protected $casts = [

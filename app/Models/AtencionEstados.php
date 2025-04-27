@@ -16,6 +16,7 @@ class AtencionEstados extends Model
         'accion_id',
         'tipo_id',
         'actividades',
+        'id',
     ];
 
     protected $casts = [
@@ -39,10 +40,10 @@ class AtencionEstados extends Model
         return $this->hasMany(ActividadesEjecucion::class,'atencion_estado_id');
     }
 
-    public function actividades(): HasMany
-    {
-        return $this->hasMany(ActividadEstadoAtencion::class, 'id_estado_atencion');
-    }
+   // public function actividades(): HasMany
+  //  {
+  //      return $this->hasMany(ActividadEstadoAtencion::class, 'id_estado_atencion');
+ //   }
 
     protected static function booted()
     {

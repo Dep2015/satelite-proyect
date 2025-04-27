@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tipode_atencions', function (Blueprint $table) {
-            $table->unsignedBigInteger('estado')->default(1)->after('id_empresa');
-            // Puedes usar ->after('id_empresa') para que el campo quede ordenado
+        Schema::table('tipo_estado_atencions', function (Blueprint $table) {
+            $table->tinyInteger('estado')->default(1)->after('id_empresa');
+            // Se crea el campo 'estado' después de 'id_empresa'
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tipode_atencions', function (Blueprint $table) {
+        Schema::table('tipo_estado_atencions', function (Blueprint $table) {
             //
         });
     }

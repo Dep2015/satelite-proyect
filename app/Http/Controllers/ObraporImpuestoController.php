@@ -363,7 +363,7 @@ public function editObraporImpuestoEstado(Request $request)
 
            try{
 
-            $itemsObraporImpuesto = ObraporImpuesto::where('id_empresa', $request->id_empresa)->with(['estado:id,name', 'tipo:id,name'])->get();
+            $itemsObraporImpuesto = ObraporImpuesto::where('id_empresa', $request->id_empresa)->where('estado', 1)->with(['estado:id,name', 'tipo:id,name'])->get();
 
             return response()->json(
                 [
@@ -378,6 +378,45 @@ public function editObraporImpuestoEstado(Request $request)
            }
 
     }
+
+    public function allObraporImpuestoCo(Request $request)
+{
+    $validated = Validator::make($request->all(), [
+        'id_empresa' => 'required|integer',
+        'centros_operacion' => 'nullable|array',
+        'centros_operacion.*' => 'required|integer',
+    ]);
+
+    if ($validated->fails()) {
+        return response()->json($validated->errors(), 403);
+    }
+
+    try {
+        $query = ObraporImpuesto::where('id_empresa', $request->id_empresa)
+                    ->where('estado', 1)
+                    ->with(['estado:id,name', 'tipo:id,name']);
+
+        // Solo si envían centros de operación
+        if ($request->filled('centros_operacion')) {
+            foreach ($request->centros_operacion as $centroId) {
+                $query->whereJsonContains('centros_operacion', ['id' => $centroId]);
+            }
+        }
+
+        $itemsObraporImpuesto = $query->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $itemsObraporImpuesto,
+        ], 200);
+
+    } catch (\Exception $exceptionall) {
+        return response()->json([
+            'error' => $exceptionall->getMessage(),
+        ], 403);
+    }
+}
+
 
 
     public function deleteObraporImpuesto(Request $request)
@@ -394,44 +433,28 @@ public function editObraporImpuestoEstado(Request $request)
     }
 
     try {
-        // Verifica que exista la obra antes de eliminar actividades relacionadas
+        // Buscar la obra en la base de datos
         $obra = ObraporImpuesto::findOrFail($request->id);
 
-        // Eliminar actividades relacionadas a la obra
-        ActividadesEjecucion::where('id_obra_impuesto', $obra->id)->delete();
+        // Actualizar los datos
+        $obra->update([
 
-        //Eliminar financista
+            'estado' => 0,
 
-        InformacionFinancista::where('id_obra_impuesto', $obra->id)->delete();
-
-        //Eliminar Contratista
-        InformacionContratista::where('id_obra_impuesto', $obra->id)->delete();
-
-
-
-        //Eliminar Pago
-        PagosOI::where('id_obra_impuesto', $obra->id)->delete();
-
-
-
-        // Eliminar la obra
-        $obra->delete();
+        ]);
 
         return response()->json([
-            'message' => 'Obra y actividades eliminadas con éxito'
+            'message' => 'Estado de Obra actualizada con éxito',
+            'obra' => $obra
         ], 200);
 
-    } catch (ModelNotFoundException $e) {
+    } catch (\Exception $exception) {
         return response()->json([
-            'error' => 'La obra con el ID proporcionado no existe'
-        ], 404);
-
-    } catch (\Exception $exceptiondelete) {
-        return response()->json([
-            'error' => 'Error al eliminar la obra',
-            'message' => $exceptiondelete->getMessage()
+            'error' => 'Error al actualizar el estado de la obra',
+            'message' => $exception->getMessage()
         ], 500);
     }
+
 }
 
 }

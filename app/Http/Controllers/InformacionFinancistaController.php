@@ -116,28 +116,6 @@ class InformacionFinancistaController extends Controller
         ], 403);
     }
 
-  /***  try {
-        $financista = InformacionFinancista::findOrFail($request->id);
-        $financista->delete();
-
-        return response()->json([
-            'message' => 'Financista eliminado con éxito'
-        ], 200);
-
-    } catch (ModelNotFoundException $e) {
-        return response()->json([
-            'error' => 'El financista con el ID proporcionado no existe'
-        ], 404);
-
-    } catch (\Exception $exceptiondelete) {
-        return response()->json([
-            'error' => 'Error al eliminar el financista',
-            'message' => $exceptiondelete->getMessage()
-        ], 500);
-    }
-
-    */
-
     try{
 
         $tipoFinancista_data = InformacionFinancista::find($request->id);

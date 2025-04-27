@@ -17,6 +17,7 @@ class ObraporImpuesto extends Model
          'id_empresa',
          'tipo_id',
          'estado_id',
+         'estado',
      ];
 
 

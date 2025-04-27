@@ -116,29 +116,6 @@ class InformacionContratistaController extends Controller
         ], 403);
     }
 
-   /***
-    *  try {
-        $contratista = InformacionContratista::findOrFail($request->id);
-        $contratista->delete();
-
-        return response()->json([
-            'message' => 'Contratista eliminado con éxito'
-        ], 200);
-
-    } catch (ModelNotFoundException $e) {
-        return response()->json([
-            'error' => 'El contratista con el ID proporcionado no existe'
-        ], 404);
-
-    } catch (\Exception $exceptiondelete) {
-        return response()->json([
-            'error' => 'Error al eliminar el contratista',
-            'message' => $exceptiondelete->getMessage()
-        ], 500);
-    }
-    **/
-
-
     try{
 
         $tipocontratista_data = InformacionContratista::find($request->id);

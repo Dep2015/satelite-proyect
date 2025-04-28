@@ -385,6 +385,9 @@ public function editObraporImpuestoEstado(Request $request)
         'id_empresa' => 'required|integer',
         'centros_operacion' => 'nullable|array',
         'centros_operacion.*' => 'required|integer',
+        'unidades_gestion' => 'nullable|array',
+        'unidades_gestion.*' => 'required|integer',
+        'modo' => 'nullable|string|in:A,O', // "A" (AND) o "O" (OR)
     ]);
 
     if ($validated->fails()) {
@@ -396,11 +399,48 @@ public function editObraporImpuestoEstado(Request $request)
                     ->where('estado', 1)
                     ->with(['estado:id,name', 'tipo:id,name']);
 
-        // Solo si envían centros de operación
-        if ($request->filled('centros_operacion')) {
-            foreach ($request->centros_operacion as $centroId) {
-                $query->whereJsonContains('centros_operacion', ['id' => $centroId]);
+        $modo = $request->modo ?? 'A'; // Por defecto "A" (AND)
+
+        $hasCentros = $request->filled('centros_operacion');
+        $hasUnidades = $request->filled('unidades_gestion');
+
+        if ($hasCentros && $hasUnidades) {
+            if ($modo === 'A') {
+                // Ambos (AND)
+                $query->where(function ($q) use ($request) {
+                    foreach ($request->centros_operacion as $centroId) {
+                        $q->whereJsonContains('centros_operacion', ['id' => $centroId]);
+                    }
+                })->where(function ($q) use ($request) {
+                    foreach ($request->unidades_gestion as $unidadId) {
+                        $q->whereJsonContains('unidades_gestion', ['id' => $unidadId]);
+                    }
+                });
+            } else {
+                // Alguno (OR)
+                $query->where(function ($q) use ($request) {
+                    foreach ($request->centros_operacion as $centroId) {
+                        $q->orWhereJsonContains('centros_operacion', ['id' => $centroId]);
+                    }
+                    foreach ($request->unidades_gestion as $unidadId) {
+                        $q->orWhereJsonContains('unidades_gestion', ['id' => $unidadId]);
+                    }
+                });
             }
+        } elseif ($hasCentros) {
+            // Solo centros
+            $query->where(function ($q) use ($request) {
+                foreach ($request->centros_operacion as $centroId) {
+                    $q->orWhereJsonContains('centros_operacion', ['id' => $centroId]);
+                }
+            });
+        } elseif ($hasUnidades) {
+            // Solo unidades
+            $query->where(function ($q) use ($request) {
+                foreach ($request->unidades_gestion as $unidadId) {
+                    $q->orWhereJsonContains('unidades_gestion', ['id' => $unidadId]);
+                }
+            });
         }
 
         $itemsObraporImpuesto = $query->get();

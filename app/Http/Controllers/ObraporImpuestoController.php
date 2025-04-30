@@ -455,7 +455,7 @@ public function editObraporImpuestoEstado(Request $request)
         ], 403);
     }
 
-}*/ 
+}*/
 
 public function allObraporImpuestoCo1(Request $request)
 {
@@ -642,14 +642,14 @@ public function allObraporImpuestoCo(Request $request)
                 'tipo_nombre' => $item->tipo?->name ?? null,
                 'estado_id' => $item->estado_id ?? null,
                 'estado_nombre' => $item->estados?->name ?? null,
-                'costo_proyecto' => $item->costo_proyecto ?? 0,
+                'costo_proyecto' =>  (float) ($item->costo_proyecto ?? 0),
                 'fecha_conclusion' => $item->fecha_conclusion ?? null,
                 'fecha_reembolso' => $item->fecha_reembolso ?? null,
                 'responsable' => $item->responsable ?? [],
                 'unidades_gestion' => $item->unidades_gestion ?? [],
                 'centros_operacion' => $item->centros_operacion ?? [],
-                'monto_pagado' => $item->pagos_sum_monto_pagado ?? 0,
-                'monto_recuperado' => $item->pagos_tipo_gasto1_sum_monto_pagado ?? 0,
+                'monto_pagado' =>  (float) ($item->pagos_sum_monto_pagado ?? 0),
+                'monto_recuperado' =>  (float)  ($item->pagos_tipo_gasto1_sum_monto_pagado ?? 0),
             ];
         });
 

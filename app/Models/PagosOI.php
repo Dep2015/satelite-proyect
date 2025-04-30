@@ -40,4 +40,9 @@ class PagosOI extends Model
         return $this->belongsTo(EstadoRembolso::class, 'id_estado_rembolso');
     }
 
+    public function obra()
+    {
+        return $this->belongsTo(ObraporImpuesto::class, 'id_obra_impuesto');
+    }
+
 }

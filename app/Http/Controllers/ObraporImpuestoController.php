@@ -379,8 +379,7 @@ public function editObraporImpuestoEstado(Request $request)
 
     }
 
-    public function allObraporImpuestoCo(Request $request)
-{
+  /***  public function allObraporImpuestoCo(Request $request){
     $validated = Validator::make($request->all(), [
         'id_empresa' => 'required|integer',
         'centros_operacion' => 'nullable|array',
@@ -444,6 +443,215 @@ public function editObraporImpuestoEstado(Request $request)
         }
 
         $itemsObraporImpuesto = $query->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $itemsObraporImpuesto,
+        ], 200);
+
+    } catch (\Exception $exceptionall) {
+        return response()->json([
+            'error' => $exceptionall->getMessage(),
+        ], 403);
+    }
+
+}*/ 
+
+public function allObraporImpuestoCo1(Request $request)
+{
+    $validated = Validator::make($request->all(), [
+        'id_empresa' => 'required|integer',
+        'centros_operacion' => 'nullable|array',
+        'centros_operacion.*' => 'required|integer',
+        'unidades_gestion' => 'nullable|array',
+        'unidades_gestion.*' => 'required|integer',
+        'modo' => 'nullable|string|in:A,O', // "A" (AND) o "O" (OR)
+    ]);
+
+    if ($validated->fails()) {
+        return response()->json($validated->errors(), 403);
+    }
+
+    try {
+        $query = ObraporImpuesto::where('id_empresa', $request->id_empresa)
+            ->where('estado', 1)
+            ->with([
+                'estados:id,name',
+                'tipo:id,name',
+            ])
+            ->withSum('pagos', 'monto_pagado')           // Suma total de todos los pagos
+            ->withSum('pagosTipoGasto1', 'monto_pagado'); // Suma de pagos donde id_tipo_gasto = 1
+
+        $modo = $request->modo ?? 'A'; // Por defecto "A" (AND)
+
+        $hasCentros = $request->filled('centros_operacion');
+        $hasUnidades = $request->filled('unidades_gestion');
+
+        if ($hasCentros && $hasUnidades) {
+            if ($modo === 'A') {
+                $query->where(function ($q) use ($request) {
+                    foreach ($request->centros_operacion as $centroId) {
+                        $q->whereJsonContains('centros_operacion', ['id' => $centroId]);
+                    }
+                })->where(function ($q) use ($request) {
+                    foreach ($request->unidades_gestion as $unidadId) {
+                        $q->whereJsonContains('unidades_gestion', ['id' => $unidadId]);
+                    }
+                });
+            } else {
+                $query->where(function ($q) use ($request) {
+                    foreach ($request->centros_operacion as $centroId) {
+                        $q->orWhereJsonContains('centros_operacion', ['id' => $centroId]);
+                    }
+                    foreach ($request->unidades_gestion as $unidadId) {
+                        $q->orWhereJsonContains('unidades_gestion', ['id' => $unidadId]);
+                    }
+                });
+            }
+        } elseif ($hasCentros) {
+            $query->where(function ($q) use ($request) {
+                foreach ($request->centros_operacion as $centroId) {
+                    $q->orWhereJsonContains('centros_operacion', ['id' => $centroId]);
+                }
+            });
+        } elseif ($hasUnidades) {
+            $query->where(function ($q) use ($request) {
+                foreach ($request->unidades_gestion as $unidadId) {
+                    $q->orWhereJsonContains('unidades_gestion', ['id' => $unidadId]);
+                }
+            });
+        }
+
+        $itemsObraporImpuesto = $query->get();
+
+        // Aquí renombramos los campos para la respuesta
+        $itemsObraporImpuesto = $itemsObraporImpuesto->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'nombre' => $item->nombre ?? null,
+                'tipo_id' => $item->tipo?->id ?? null,
+                'tipo_nombre' => $item->tipo?->name ?? null,
+                'estado_id' => $item->estado_id ?? null,
+                'estado_nombre' => $item->estados?->name ?? null,
+                'costo_proyecto' => $item->costo_proyecto ?? 0,
+                'fecha_conclusion' => $item->fecha_conclusion ?? null,
+                'fecha_reembolso' => $item->fecha_reembolso ?? null,
+                'responsable' => $item->responsable ?? [],
+                'unidades_gestion' => $item->unidades_gestion ?? [],
+                'centros_operacion' => $item->centros_operacion ?? [],
+                'monto_pagado' => $item->pagos_sum_monto_pagado ?? 0,
+                'monto_recuperado' => $item->pagos_tipo_gasto1_sum_monto_pagado ?? 0,
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $itemsObraporImpuesto,
+        ], 200);
+
+    } catch (\Exception $exceptionall) {
+        return response()->json([
+            'error' => $exceptionall->getMessage(),
+        ], 403);
+    }
+}
+
+
+public function allObraporImpuestoCo(Request $request)
+{
+    $validated = Validator::make($request->query(), [
+        'id_empresa' => 'required|integer',
+        'centros_operacion' => 'nullable|array',
+        'centros_operacion.*' => 'required|integer',
+        'unidades_gestion' => 'nullable|array',
+        'unidades_gestion.*' => 'required|integer',
+        'modo' => 'nullable|string|in:A,O',
+    ]);
+
+    if ($validated->fails()) {
+        return response()->json($validated->errors(), 403);
+    }
+
+    try {
+        $query = ObraporImpuesto::where('id_empresa', $request->query('id_empresa'))
+            ->where('estado', 1)
+            ->with([
+                'estados:id,name',
+                'tipo:id,name',
+            ])
+            ->withSum('pagos', 'monto_pagado')
+            ->withSum('pagosTipoGasto1', 'monto_pagado');
+
+        $modo = $request->query('modo', 'A');
+
+        // ¡Aquí viene el cambio!
+        $centrosOperacion = $request->query('centros_operacion', []);
+        $unidadesGestion = $request->query('unidades_gestion', []);
+
+        // Normalizamos manualmente para asegurar que sean arrays de enteros
+        $centrosOperacion = array_map('intval', (array) $centrosOperacion);
+        $unidadesGestion = array_map('intval', (array) $unidadesGestion);
+
+        $hasCentros = count($centrosOperacion) > 0;
+        $hasUnidades = count($unidadesGestion) > 0;
+
+        if ($hasCentros || $hasUnidades) {
+            if ($hasCentros && $hasUnidades) {
+                if ($modo === 'A') {
+                    $query->where(function ($q) use ($centrosOperacion) {
+                        foreach ($centrosOperacion as $centroId) {
+                            $q->whereJsonContains('centros_operacion', ['id' => $centroId]);
+                        }
+                    })->where(function ($q) use ($unidadesGestion) {
+                        foreach ($unidadesGestion as $unidadId) {
+                            $q->whereJsonContains('unidades_gestion', ['id' => $unidadId]);
+                        }
+                    });
+                } else {
+                    $query->where(function ($q) use ($centrosOperacion, $unidadesGestion) {
+                        foreach ($centrosOperacion as $centroId) {
+                            $q->orWhereJsonContains('centros_operacion', ['id' => $centroId]);
+                        }
+                        foreach ($unidadesGestion as $unidadId) {
+                            $q->orWhereJsonContains('unidades_gestion', ['id' => $unidadId]);
+                        }
+                    });
+                }
+            } elseif ($hasCentros) {
+                $query->where(function ($q) use ($centrosOperacion) {
+                    foreach ($centrosOperacion as $centroId) {
+                        $q->orWhereJsonContains('centros_operacion', ['id' => $centroId]);
+                    }
+                });
+            } elseif ($hasUnidades) {
+                $query->where(function ($q) use ($unidadesGestion) {
+                    foreach ($unidadesGestion as $unidadId) {
+                        $q->orWhereJsonContains('unidades_gestion', ['id' => $unidadId]);
+                    }
+                });
+            }
+        }
+
+        $itemsObraporImpuesto = $query->get();
+
+        $itemsObraporImpuesto = $itemsObraporImpuesto->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'nombre' => $item->nombre ?? null,
+                'tipo_id' => $item->tipo?->id ?? null,
+                'tipo_nombre' => $item->tipo?->name ?? null,
+                'estado_id' => $item->estado_id ?? null,
+                'estado_nombre' => $item->estados?->name ?? null,
+                'costo_proyecto' => $item->costo_proyecto ?? 0,
+                'fecha_conclusion' => $item->fecha_conclusion ?? null,
+                'fecha_reembolso' => $item->fecha_reembolso ?? null,
+                'responsable' => $item->responsable ?? [],
+                'unidades_gestion' => $item->unidades_gestion ?? [],
+                'centros_operacion' => $item->centros_operacion ?? [],
+                'monto_pagado' => $item->pagos_sum_monto_pagado ?? 0,
+                'monto_recuperado' => $item->pagos_tipo_gasto1_sum_monto_pagado ?? 0,
+            ];
+        });
 
         return response()->json([
             'success' => true,
